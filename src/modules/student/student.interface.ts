@@ -1,6 +1,5 @@
-import { Schema,model,connect } from "mongoose"
 
-interface IGuardian {
+export interface IGuardian {
   fatherName: string;
   fatherOccupation: string;
   fatherContactNo: string;
@@ -8,12 +7,22 @@ interface IGuardian {
   motherOccupation: string;
   motherContactNo: string;
 }
-interface IStudent {
-  name: {
-    firstName: string;
-    middleName: string;
-    lastName: string;
-  };
+
+export interface IStudentName {
+  firstName:string,
+  middleName:string,
+  lastName:string,
+}
+
+export interface ILocalGuardian {
+  name:string,
+  occupation:string,
+  address:string,
+  contactNo:string
+}
+export interface IStudent {
+  id:string;
+  name: IStudentName;
   gender: 'male' | 'female';
   dateOfBirth: string;
   email: string;
@@ -22,6 +31,8 @@ interface IStudent {
   bloogGroup?: 'A+' | 'A-' | 'B-' | 'B+' | 'O+' | 'O-' | 'AB+' | 'AB-';
   presentAddress: string;
   permanentAddress: string;
-  guardian: 
-
+  guardian: IGuardian;
+  localGurdian:ILocalGuardian;
+  profileImg?:string,
+  isActive: 'active' | 'blocked'
 }
