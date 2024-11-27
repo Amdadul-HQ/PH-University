@@ -60,3 +60,5 @@ const studentSchema = new Schema<IStudent>({
       default:'active'
     }
 });
+
+export const Student = model<IStudent>('Student',studentSchema);
