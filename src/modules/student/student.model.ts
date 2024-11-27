@@ -71,56 +71,62 @@ const localGurdianSchema = new Schema<ILocalGuardian>({
 
 const studentSchema = new Schema<IStudent>({
   dateOfBirth: {
-  type: String,
-  required: [true,'Student Date of Birth Is Required'],
-},
+    type: String,
+    required: [true, 'Student Date of Birth Is Required'],
+  },
   email: {
-  type: String,
-  required: [true,'Student Email Is Required'],
-},
+    type: String,
+    required: [true, 'Student Email Is Required'],
+  },
   contactNo: {
-  type: String,
-  required: [true,'Student Contact Number Is Required'],
-},
+    type: String,
+    required: [true, 'Student Contact Number Is Required'],
+  },
   emergencyContactNo: {
-  type: String,
-  required: [true,'Emergency Number Is Required'],
-},
+    type: String,
+    required: [true, 'Emergency Number Is Required'],
+  },
   presentAddress: {
-  type: String,
-  required: [true,'Present Address Must be Needed'],
-},
+    type: String,
+    required: [true, 'Present Address Must be Needed'],
+  },
   permanentAddress: {
-  type: String,
-  required: [true,'Permanent Address Is Required'],
-},
+    type: String,
+    required: [true, 'Permanent Address Is Required'],
+  },
   profileImg: {
-  type: String,
-},
+    type: String,
+  },
   id: {
     type: String,
   },
   name: {
     type: studentNameSchema,
-    required: [true,'Student Name Must be Inputed'],
+    required: [true, 'Student Name Must be Inputed'],
   },
   localGurdian: {
     type: localGurdianSchema,
-    required: [true,'Local Guridan Information need to be Inputed'],
+    required: [true, 'Local Guridan Information need to be Inputed'],
   },
   guardian: {
     type: guardianSchema,
-    required:[true,'Guardian Information need to be Inputed'],
+    required: [true, 'Guardian Information need to be Inputed'],
   },
   gender: {
     type: String,
-    enum: ['male', 'female'],
-    required: [true,'Gender Need To Be Inputed'],
+    enum: {
+      values: ['male', 'female'],
+      message:'{VALUE} This Gender Does not Exist'
+    },
+    required: [true, 'Gender Need To Be Inputed'],
   },
   bloogGroup: {
     type: String,
-    enum: ['A+', 'A-', 'B+', 'B-', 'O-', 'O+', 'AB+', 'AB-'],
-    required: [true,'Blood Group Needed'],
+    enum: {
+      values: ['A+', 'A-', 'B+', 'B-', 'O-', 'O+', 'AB+', 'AB-'],
+      message: '{VALUE} This is no valid blood group',
+    },
+    required: [true, 'Blood Group Needed'],
   },
   isActive: {
     type: String,
