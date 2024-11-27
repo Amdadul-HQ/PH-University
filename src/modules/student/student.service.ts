@@ -8,8 +8,15 @@ const createStudentInToDB =async (student:IStudent) =>{
     return result
 }
 
+// Students gell 
+const getAllStudentsFromDB = async () =>{
+    const result = await Student.find();
+    return result
+}
+
 
 
 export const StudentServices = {
-    createStudentInToDB
+    createStudentInToDB,
+    getAllStudentsFromDB
 }
