@@ -1,10 +1,11 @@
 import { Schema, model } from 'mongoose';
-import { IStudent } from './student.interface';
+import { IGuardian, ILocalGuardian, IStudent, IStudentName } from './student.interface';
 
 
 // sub sechema
 
-const studentNameSchema = {
+const studentNameSchema = new Schema<IStudentName>(
+{
   firstName: {
   type: String,
   required: true,
@@ -17,9 +18,9 @@ const studentNameSchema = {
   type: String,
   required: true,
 },
-};
+})
 
-const guardianSchema = {
+const guardianSchema = new Schema<IGuardian>({
   fatherName: {
   type: String,
   required: true,
@@ -44,11 +45,11 @@ const guardianSchema = {
   type: String,
   required: true,
 },
-};
+});
 
 //sub schema
 
-const localGurdianSchema = {
+const localGurdianSchema = new Schema<ILocalGuardian>({
   name: {
   type: String,
   required: true,
@@ -65,7 +66,7 @@ const localGurdianSchema = {
   type: String,
   required: true,
 },
-};
+});
 
 // Schema
 
