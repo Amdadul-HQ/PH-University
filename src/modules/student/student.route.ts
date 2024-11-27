@@ -6,6 +6,7 @@ const StudentRouter = express.Router();
 // Student Create
 StudentRouter.post('/create-student',StudentControllers.createStudent)
 
+// Get All Students
 StudentRouter.get('/get-all-students',StudentControllers.getAllStudent)
 
 export const StudentRouters = StudentRouter
