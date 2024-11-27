@@ -39,7 +39,10 @@ const studentSchema = new Schema<IStudent>({
   id: {
     type: String,
   },
-  name: studentNameSchema,
+  name: {
+    type: studentNameSchema,
+    required:true
+  },
   dateOfBirth: commonSchema,
   email: commonSchema,
   contactNo: commonSchema,
