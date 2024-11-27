@@ -1,4 +1,3 @@
-
 export interface IGuardian {
   fatherName: string;
   fatherOccupation: string;
@@ -9,19 +8,19 @@ export interface IGuardian {
 }
 
 export interface IStudentName {
-  firstName:string,
-  middleName:string,
-  lastName:string,
+  firstName: string;
+  middleName: string;
+  lastName: string;
 }
 
 export interface ILocalGuardian {
-  name:string,
-  occupation:string,
-  address:string,
-  contactNo:string
+  name: string;
+  occupation: string;
+  address: string;
+  contactNo: string;
 }
 export interface IStudent {
-  id:string;
+  id: string;
   name: IStudentName;
   gender: 'male' | 'female';
   dateOfBirth: string;
@@ -32,7 +31,7 @@ export interface IStudent {
   presentAddress: string;
   permanentAddress: string;
   guardian: IGuardian;
-  localGurdian:ILocalGuardian;
-  profileImg?:string,
-  isActive: 'active' | 'blocked'
+  localGurdian: ILocalGuardian;
+  profileImg?: string;
+  isActive: 'active' | 'blocked';
 }

@@ -1,12 +1,11 @@
-import { Schema,model } from "mongoose";
-import { IStudent } from "./student.interface";
-
+import { Schema, model } from 'mongoose';
+import { IStudent } from './student.interface';
 
 // sub sechema
 const commonSchema = {
-    type:String,
-    required:true
-}
+  type: String,
+  required: true,
+};
 
 // sub sechema
 
@@ -16,23 +15,23 @@ const studentNameSchema = {
   lastName: commonSchema,
 };
 
-const guardianSchema ={
-    fatherName:commonSchema,
-    fatherOccupation:commonSchema,
-    fatherContactNo:commonSchema,
-    motherName:commonSchema,
-    motherOccupation:commonSchema,
-    motherContactNo:commonSchema,
-}
+const guardianSchema = {
+  fatherName: commonSchema,
+  fatherOccupation: commonSchema,
+  fatherContactNo: commonSchema,
+  motherName: commonSchema,
+  motherOccupation: commonSchema,
+  motherContactNo: commonSchema,
+};
 
-//sub schema 
+//sub schema
 
 const localGurdianSchema = {
-    name:commonSchema,
-    occupation:commonSchema,
-    address:commonSchema,
-    contactNo:commonSchema
-  }
+  name: commonSchema,
+  occupation: commonSchema,
+  address: commonSchema,
+  contactNo: commonSchema,
+};
 
 // Schema
 
@@ -41,31 +40,31 @@ const studentSchema = new Schema<IStudent>({
     type: String,
   },
   name: studentNameSchema,
-  dateOfBirth:commonSchema,
-  email:commonSchema,
-  contactNo:commonSchema,
-  emergencyContactNo:commonSchema,
-  presentAddress:commonSchema,
-  permanentAddress:commonSchema,
-  localGurdian:localGurdianSchema,
-  guardian:guardianSchema,
-  profileImg:commonSchema,
-  gender:{
-    type:String,
-    enum:['male','female'],
-    required:true
+  dateOfBirth: commonSchema,
+  email: commonSchema,
+  contactNo: commonSchema,
+  emergencyContactNo: commonSchema,
+  presentAddress: commonSchema,
+  permanentAddress: commonSchema,
+  localGurdian: localGurdianSchema,
+  guardian: guardianSchema,
+  profileImg: commonSchema,
+  gender: {
+    type: String,
+    enum: ['male', 'female'],
+    required: true,
   },
-  bloogGroup:{
-    type:String,
-    enum:['A+','A-','B+','B-','O-','O+','AB+','AB-'],
-    required:true
+  bloogGroup: {
+    type: String,
+    enum: ['A+', 'A-', 'B+', 'B-', 'O-', 'O+', 'AB+', 'AB-'],
+    required: true,
   },
-  isActive:{
-      type:String,
-      enum:['active','blocked'],
-      default:'active'
-    }
+  isActive: {
+    type: String,
+    enum: ['active', 'blocked'],
+    default: 'active',
+  },
 });
 
 // Mdel
-export const Student = model<IStudent>('Student',studentSchema);
+export const Student = model<IStudent>('Student', studentSchema);
