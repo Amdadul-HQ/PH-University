@@ -1,10 +1,14 @@
 import { Schema,model } from "mongoose";
 import { IStudent } from "./student.interface";
 
+
+// sub sechema
 const commonSchema = {
     type:String,
     required:true
 }
+
+// sub sechema
 
 const studentNameSchema = {
   firstName: commonSchema,
@@ -21,6 +25,8 @@ const guardianSchema ={
     motherContactNo:commonSchema,
 }
 
+//sub schema 
+
 const localGurdianSchema = {
     name:commonSchema,
     occupation:commonSchema,
@@ -28,7 +34,7 @@ const localGurdianSchema = {
     contactNo:commonSchema
   }
 
-
+// Schema
 
 const studentSchema = new Schema<IStudent>({
   id: {
@@ -61,4 +67,5 @@ const studentSchema = new Schema<IStudent>({
     }
 });
 
+// Mdel
 export const Student = model<IStudent>('Student',studentSchema);
