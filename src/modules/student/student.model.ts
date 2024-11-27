@@ -10,6 +10,14 @@ const studentNameSchema = new Schema<IStudentName>({
     required: [true, 'Student First Name Is Required'],
     maxlength: [10, 'Student First Name Can Not More Than 10 Characters'],
     trim: true,
+    validate: {
+      validator: function (value: string) {
+        const firstNameStr =
+          value.charAt(0).toUpperCase() + value.slice(1).toLocaleLowerCase();
+        return firstNameStr === value;
+      },
+      message:'{VALUE} is not in capitalize'
+    },
   },
   middleName: {
     type: String,
