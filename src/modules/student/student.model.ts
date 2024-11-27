@@ -1,43 +1,52 @@
 import { Schema,model,connect } from "mongoose";
 import { IStudent } from "./student.interface";
 
+const commonSchema = {
+    type:String,
+    required:true
+}
+
+const studentNameSchema = {
+  firstName: commonSchema,
+  middleName: commonSchema,
+  lastName: commonSchema,
+};
+
+const guardianSchema ={
+    fatherName:commonSchema,
+    fatherOccupation:commonSchema,
+    fatherContactNo:commonSchema,
+    motherName:commonSchema,
+    motherOccupation:commonSchema,
+    motherContactNo:commonSchema,
+}
+
+const localGurdianSchema = {
+    name:commonSchema,
+    occupation:commonSchema,
+    address:commonSchema,
+    contactNo:commonSchema
+  }
+
+
+
 const studentSchema = new Schema<IStudent>({
   id: {
     type: String,
   },
-  name: {
-    firstName:{
-        type:String,
-        required:true
-    },
-    middleName:{
-        type:String,
-        required:true,
-    },
-    lastName:{
-        type:String,
-        required:true
-    }
-  },
+  name: studentNameSchema,
+  dateOfBirth:commonSchema,
+  email:commonSchema,
+  contactNo:commonSchema,
+  emergencyContactNo:commonSchema,
+  presentAddress:commonSchema,
+  permanentAddress:commonSchema,
+  localGurdian:localGurdianSchema,
+  guardian:guardianSchema,
+  profileImg:commonSchema,
   gender:{
     type:String,
     enum:['male','female'],
-    required:true
-  },
-  dateOfBirth:{
-    type:String,
-    required:true
-  },
-  email:{
-    type:String,
-    required:true
-  },
-  contactNo:{
-    type:String,
-    required:true
-  },
-  emergencyContactNo:{
-    type:String,
     required:true
   },
   bloogGroup:{
@@ -45,62 +54,9 @@ const studentSchema = new Schema<IStudent>({
     enum:['A+','A-','B+','B-','O-','O+','AB+','AB-'],
     required:true
   },
-  presentAddress:{
-    type:String,
-    required:true
-  },
-  permanentAddress:{
-    type:String,
-    required:true
-  },
-  localGurdian:{
-    name:{
-        type:String,
-        required:true,
-    },
-    occupation:{
-        type:String,
-        required:true
-    },
-    address:{
-        type:String,
-        required:true
-    },
-    contactNo:{
-        type:String,
-        required:true,
-    }
-  },
-  guardian:{
-    fatherName:{
-        type:String,
-        required:true
-    },
-    fatherOccupation:{
-        type:String,
-        required:true
-    },
-    fatherContactNo:{
-        type:String,
-        required:true
-    },
-    motherName:{
-        type:String,
-        required:true
-    },
-    motherOccupation:{
-        type:String,
-        required:true
-    },
-    motherContactNo:{
-        type:String,
-        required:true
-    },
-  },
-  profileImg:String,
   isActive:{
-    type:String,
-    enum:['active','blocked'],
-    default:'active'
-  }
+      type:String,
+      enum:['active','blocked'],
+      default:'active'
+    }
 });
