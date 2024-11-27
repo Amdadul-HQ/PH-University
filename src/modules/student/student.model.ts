@@ -4,25 +4,28 @@ import { IGuardian, ILocalGuardian, IStudent, IStudentName } from './student.int
 
 // sub sechema
 
-const studentNameSchema = new Schema<IStudentName>(
-{
+const studentNameSchema = new Schema<IStudentName>({
   firstName: {
-  type: String,
-  required: [true,'Student First Name Is Required'],
-},
+    type: String,
+    required: [true, 'Student First Name Is Required'],
+    maxlength: [10, 'Student First Name Can Not More Than 10 Characters'],
+  },
   middleName: {
-  type: String,
-},
+    type: String,
+    maxlength: [10, 'Student Middle Name Can Not More Than 10 Characters'],
+  },
   lastName: {
-  type: String,
-  required: [true,'Student Last Name Is Required'],
-},
-})
+    type: String,
+    required: [true, 'Student Last Name Is Required'],
+    maxlength: [10, 'Student Last Name Can Not More Than 10 Characters'],
+  },
+});
 
 const guardianSchema = new Schema<IGuardian>({
   fatherName: {
     type: String,
     required: [true, 'Father Name is Required'],
+    maxlength: [20, 'Father Name Not more than 20 characters'],
   },
   fatherOccupation: {
     type: String,
@@ -31,10 +34,12 @@ const guardianSchema = new Schema<IGuardian>({
   fatherContactNo: {
     type: String,
     required: [true, 'Father Contact Number is Required'],
+    maxlength: [11, 'Father Contact Number Can not more then 11 Number'],
   },
   motherName: {
     type: String,
     required: [true, 'Mother Name is Required'],
+    maxlength: [20, 'Mother Name Not more than 20 characters'],
   },
   motherOccupation: {
     type: String,
@@ -43,6 +48,7 @@ const guardianSchema = new Schema<IGuardian>({
   motherContactNo: {
     type: String,
     required: [true, 'Mother Contact Number is Required'],
+    maxlength: [11, 'Mother Contact Number Can not more then 11 Number'],
   },
 });
 
@@ -50,21 +56,23 @@ const guardianSchema = new Schema<IGuardian>({
 
 const localGurdianSchema = new Schema<ILocalGuardian>({
   name: {
-  type: String,
-  required: [true,'Local Gurdian Name Is Required'],
-},
+    type: String,
+    required: [true, 'Local Gurdian Name Is Required'],
+    maxlength: [20, 'Local Name Not more than 20 characters'],
+  },
   occupation: {
-  type: String,
-  required: [true,'Local Guridan Occupation Is Required'],
-},
+    type: String,
+    required: [true, 'Local Guridan Occupation Is Required'],
+  },
   address: {
-  type: String,
-  required: [true,'Local Guridan Address Is Rquired'],
-},
+    type: String,
+    required: [true, 'Local Guridan Address Is Rquired'],
+  },
   contactNo: {
-  type: String,
-  required: [true,'Local Guridan Number Is Reqired'],
-},
+    type: String,
+    required: [true, 'Local Guridan Number Is Reqired'],
+    maxlength: [11, 'Local Contact Number Can not more then 11 Number'],
+  },
 });
 
 // Schema
@@ -81,10 +89,12 @@ const studentSchema = new Schema<IStudent>({
   contactNo: {
     type: String,
     required: [true, 'Student Contact Number Is Required'],
+    maxlength: [11, 'Student Contact Number Can not more then 11 Number'],
   },
   emergencyContactNo: {
     type: String,
     required: [true, 'Emergency Number Is Required'],
+    maxlength: [11, 'Emergency Contact Number Can not more then 11 Number'],
   },
   presentAddress: {
     type: String,
@@ -116,7 +126,7 @@ const studentSchema = new Schema<IStudent>({
     type: String,
     enum: {
       values: ['male', 'female'],
-      message:'{VALUE} This Gender Does not Exist'
+      message: '{VALUE} This Gender Does not Exist',
     },
     required: [true, 'Gender Need To Be Inputed'],
   },
