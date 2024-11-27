@@ -1,51 +1,91 @@
-import { Schema,model,connect } from "mongoose";
-import { IStudent } from "./student.interface";
+import { Schema,model } from "mongoose";
+import { IGuardian, IStudent, IStudentName } from "./student.interface";
+
+
+const studentNameSchema =new Schema<IStudentName>({
+  firstName:{
+    type:String,
+    required:true
+},
+  middleName:{
+    type:String,
+    required:true
+},
+  lastName:{
+    type:String,
+    required:true
+},
+});
+
+const guardianSchema = new Schema<IGuardian>({
+  fatherName: {
+    type: String,
+    required: true,
+  },
+  fatherOccupation: {
+    type: String,
+    required: true,
+  },
+  fatherContactNo: {
+    type: String,
+    required: true,
+  },
+  motherName: {
+    type: String,
+    required: true,
+  },
+  motherOccupation: {
+    type: String,
+    required: true,
+  },
+  motherContactNo: {
+    type: String,
+    required: true,
+  },
+});
 
 
 
-const studentNameSchema = {
-  firstName: {
+const studentSchema = new Schema<IStudent>({
+  id: {
+    type: String,
+  },
+  name: studentNameSchema,
+  gender:{
+    type:String,
+    enum:['male','female'],
+    required:true
+  },
+  dateOfBirth:{
     type:String,
     required:true
-},
-  middleName: {
+  },
+  email:{
     type:String,
     required:true
-},
-  lastName: {
+  },
+  contactNo:{
     type:String,
     required:true
-},
-};
-
-const guardianSchema ={
-    fatherName:{
+  },
+  emergencyContactNo:{
     type:String,
     required:true
-},
-    fatherOccupation:{
+  },
+  bloogGroup:{
+    type:String,
+    enum:['A+','A-','B+','B-','O-','O+','AB+','AB-'],
+    required:true
+  },
+  presentAddress:{
     type:String,
     required:true
-},
-    fatherContactNo:{
+  },
+  permanentAddress:{
     type:String,
     required:true
-},
-    motherName:{
-    type:String,
-    required:true
-},
-    motherOccupation:{
-    type:String,
-    required:true
-},
-    motherContactNo:{
-    type:String,
-    required:true
-},
-}
-
-const localGurdianSchema = {
+  },
+  localGurdian:{
     name:{
         type:String,
         required:true,
@@ -62,66 +102,14 @@ const localGurdianSchema = {
         type:String,
         required:true,
     }
+  },
+  guardian:guardianSchema,
+  profileImg:String,
+  isActive:{
+    type:String,
+    enum:['active','blocked'],
+    default:'active'
   }
-
-
-
-const studentSchema = new Schema<IStudent>({
-  id: {
-    type: String,
-  },
-  name: {
-    type: studentNameSchema,
-    required: true,
-  },
-  gender: {
-    type: String,
-    enum: ['male', 'female'],
-    required: true,
-  },
-  dateOfBirth: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  contactNo: {
-    type: String,
-    required: true,
-  },
-  emergencyContactNo: {
-    type: String,
-    required: true,
-  },
-  bloogGroup: {
-    type: String,
-    enum: ['A+', 'A-', 'B+', 'B-', 'O-', 'O+', 'AB+', 'AB-'],
-    required: true,
-  },
-  presentAddress: {
-    type: String,
-    required: true,
-  },
-  permanentAddress: {
-    type: String,
-    required: true,
-  },
-  localGurdian: {
-    type: localGurdianSchema,
-    required: true,
-  },
-  guardian: {
-    type: guardianSchema,
-    required:true
-  },
-  profileImg: String,
-  isActive: {
-    type: String,
-    enum: ['active', 'blocked'],
-    default: 'active',
-  },
 });
 
 // Mdel
