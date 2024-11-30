@@ -4,19 +4,24 @@ import { Student } from './student.model';
 // Student register
 const createStudentInToDB = async (studentData: IStudent) => {
   // built in static method
-  // const result = await Student.create(student);
+  const result = await Student.create(studentData);
 
-
-  // create an instance 
-  const student = new Student(studentData);
-  
-  // checking Student Exists
-  if (await student.isStudentExists(studentData.id)){
-    throw new Error("Student already exists")
+  // Static method
+  if (await Student.isStudentExists(studentData.id)){
+    throw new Error('Student already exists!');
   }
-  
-  const result = await student.save()
-  return result;
+    // create an instance
+    // const student = new Student(studentData);
+
+    // st
+
+    // checking Student Exists
+    // if (await student.isStudentExists(studentData.id)){
+    //   throw new Error("Student already exists")
+    // }
+
+    // const result = await student.save()
+    return result;
 };
 
 // Students gell
