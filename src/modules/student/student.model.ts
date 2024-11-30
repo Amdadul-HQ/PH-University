@@ -1,5 +1,12 @@
 import { Schema, model } from 'mongoose';
-import { IGuardian, ILocalGuardian, IStudent, IStudentName } from './student.interface';
+import {
+  IGuardian,
+  ILocalGuardian,
+  IStudent,
+  IStudentMethods,
+  IStudentName,
+  TStudentModel,
+} from './student.interface';
 
 
 // sub sechema
@@ -98,7 +105,7 @@ const localGurdianSchema = new Schema<ILocalGuardian>({
 
 // Schema
 
-const studentSchema = new Schema<IStudent>({
+const studentSchema = new Schema<IStudent, TStudentModel, IStudentMethods>({
   dateOfBirth: {
     type: String,
     required: [true, 'Student Date of Birth Is Required'],
@@ -172,5 +179,12 @@ const studentSchema = new Schema<IStudent>({
   },
 });
 
+// Checking Student exist
+studentSchema.methods.isStudentExists = async function (id:string) {
+  const existingStudent = await Student.findOne({id})
+  return existingStudent;
+}
+
+
 // Mdel
-export const Student = model<IStudent>('Student', studentSchema);
+export const Student = model<IStudent, TStudentModel>('Student', studentSchema);
