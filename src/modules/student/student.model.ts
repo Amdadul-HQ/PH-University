@@ -3,10 +3,8 @@ import {
   IGuardian,
   ILocalGuardian,
   IStudent,
-  IStudentMethods,
   IStudentModel,
   IStudentName,
-  TStudentModel,
 } from './student.interface';
 
 
