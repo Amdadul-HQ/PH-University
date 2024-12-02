@@ -11,7 +11,7 @@ const createStudentInToDB = async (studentData: IStudent) => {
   //   throw new Error("Student Alreay Register")
   // }
   // const result = student.save()
-  
+
   // build in instance method
   // const result = await Student.create(studentData);
   
@@ -34,8 +34,18 @@ const getSingleStudentsFromDB = async (studentId: string) => {
   return result;
 };
 
+// Delete Student From db
+const deleteStudentFromDB = async (id:string) =>{
+  if (!(await Student.isStudentExists(id))) {
+    throw new Error('Staudent Not Found!!');
+  }
+  const result = await Student.updateOne({id},{isDeleted:true});
+  return result
+}
+
 export const StudentServices = {
   createStudentInToDB,
   getAllStudentsFromDB,
   getSingleStudentsFromDB,
+  deleteStudentFromDB,
 };

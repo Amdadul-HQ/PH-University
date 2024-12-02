@@ -24,7 +24,7 @@ export interface ILocalGuardian {
 }
 export interface IStudent {
   id: string;
-  password:string;
+  password: string;
   name: IStudentName;
   gender: 'male' | 'female';
   dateOfBirth: string;
@@ -38,6 +38,7 @@ export interface IStudent {
   localGurdian: ILocalGuardian;
   profileImg?: string;
   isActive: 'active' | 'blocked';
+  isDeleted:boolean
 }
 
 // Statics

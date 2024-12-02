@@ -75,7 +75,7 @@ const studentSchema = z.object({
   permanentAddress: z.string().min(1, 'Permanent Address is Required'),
   profileImg: z.string().optional(),
   id: z.string().optional(),
-  password:z.string().max(20),
+  password: z.string().max(20),
   name: studentNameSchema,
   localGurdian: localGuardianSchema,
   guardian: guardianSchema,
@@ -84,6 +84,7 @@ const studentSchema = z.object({
     required_error: 'Blood Group is Required',
   }),
   isActive: z.enum(['active', 'blocked']).default('active'),
+  isDeleted:z.boolean().default(false)
 });
 
 // Export

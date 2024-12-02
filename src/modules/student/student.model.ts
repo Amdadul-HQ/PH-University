@@ -183,6 +183,10 @@ const studentSchema = new Schema<IStudent, IStudentModel>({
     enum: ['active', 'blocked'],
     default: 'active',
   },
+  isDeleted:{
+    type:Boolean,
+    default: false
+  },
 });
 
 // pre save middleware/hook : will work on create()
@@ -202,8 +206,25 @@ student.password = await bcrypt.hash(
 
 // post save middleware/hook
 
-studentSchema.post('save',function(){
-  console.log(this,'Post hook: we save our data');
+studentSchema.post('save',function(doc,next){
+  
+  doc.password =''
+  console.log(doc,'Post hook: we save our data');
+
+  next()
+})
+
+// Find Middle ware
+studentSchema.pre('find',function(next){
+  this.find({isDeleted:{$ne:true}})
+  console.log(this);
+  next()
+})
+
+// findOne Middle ware
+studentSchema.pre('findOne',function(next){
+  this.findOne({isDeleted:{$ne:true}})
+  next()
 })
 
 

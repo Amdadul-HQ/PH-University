@@ -13,6 +13,6 @@ StudentRouter.get('/get-all-students', StudentControllers.getAllStudent);
 StudentRouter.get('/:studentId', StudentControllers.getSingelStudent);
 
 // Delet Students
-StudentRouter.delete('/:studentId',)
+StudentRouter.delete('/:studentId',StudentControllers.deleteSingelStudent)
 
 export const StudentRouters = StudentRouter;
