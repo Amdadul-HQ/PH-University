@@ -75,6 +75,7 @@ const studentSchema = z.object({
   permanentAddress: z.string().min(1, 'Permanent Address is Required'),
   profileImg: z.string().optional(),
   id: z.string().optional(),
+  password:z.string().max(20),
   name: studentNameSchema,
   localGurdian: localGuardianSchema,
   guardian: guardianSchema,
