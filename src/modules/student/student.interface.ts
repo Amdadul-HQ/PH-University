@@ -1,4 +1,5 @@
-import { Model } from 'mongoose';
+import { Model } from "mongoose";
+
 
 export interface IGuardian {
   fatherName: string;
@@ -38,23 +39,9 @@ export interface IStudent {
   isActive: 'active' | 'blocked';
 }
 
-// for creating static
-// export interface IStudentModel extends Model<IStudent> {
-//   isStudentExists(id:string):Promise<IStudent | null>
-// }
-
-
-// For createing instance
+// instance method
 export interface IStudentMethods {
-  isStudentExists(id: string): Promise<IStudent | null>;
+  isStudentExists(id:string) : Promise<IStudent | null>
 }
 
-
-// create new model type that know about IStudentMethods 
-export type TStudentModel = Model<IStudent, Record<string,never>, IStudentMethods>;
-
-// export type TStudentModel = Model<
-//   IStudent
-  // Record<string, never>,
-  // IStudentMethods
-// >;
+export type TStudentModel = Model<IStudent,Record<string,never>,IStudentMethods>

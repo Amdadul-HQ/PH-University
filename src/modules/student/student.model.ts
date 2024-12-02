@@ -4,7 +4,6 @@ import {
   ILocalGuardian,
   IStudent,
   IStudentMethods,
-  // IStudentModel,
   IStudentName,
   TStudentModel,
 } from './student.interface';
@@ -106,7 +105,7 @@ const localGurdianSchema = new Schema<ILocalGuardian>({
 
 // Schema
 
-const studentSchema = new Schema<IStudent, TStudentModel,IStudentMethods>({
+const studentSchema = new Schema<IStudent,TStudentModel,IStudentMethods>({
   dateOfBirth: {
     type: String,
     required: [true, 'Student Date of Birth Is Required'],
@@ -180,34 +179,12 @@ const studentSchema = new Schema<IStudent, TStudentModel,IStudentMethods>({
   },
 });
 
-
-// pre save middleware /hook
-studentSchema.pre('save',function(){
-  console.log(this,'pre hook : we will save to data');
-});
-
-// post save middleware/hook
-studentSchema.post("save",function(){
-  console.log(this,'post hook: we saved our data');
-})
-
-
-
-// createing a statice method
-studentSchema.statics.isStudentExists = async function (id:string) {
-  const existingStudent = await Student.findOne({id})
-  return existingStudent;
+studentSchema.methods.isStudentExists = async function (id:string) {
+  const existStudent = await Student.findOne({id});
+  return existStudent;
 }
 
+export const Student = model<IStudent,TStudentModel>('student',studentSchema)
 
 
-// Checking Student exist
-// studentSchema.methods.isStudentExists = async function (id:string) {
-//   const existingStudent = await Student.findOne({id})
-//   return existingStudent;
-// }
-
-
-// Mdel
-export const Student = model<IStudent, TStudentModel>('Student', studentSchema);
 
