@@ -106,88 +106,106 @@ const localGurdianSchema = new Schema<ILocalGuardian>({
 
 // Schema
 
-const studentSchema = new Schema<IStudent, IStudentModel>({
-  dateOfBirth: {
-    type: String,
-    required: [true, 'Student Date of Birth Is Required'],
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: [true, 'Student Email Is Required'],
-    trim: true,
-  },
-  contactNo: {
-    type: String,
-    required: [true, 'Student Contact Number Is Required'],
-    maxlength: [11, 'Student Contact Number Can not more then 11 Number'],
-    trim: true,
-  },
-  emergencyContactNo: {
-    type: String,
-    required: [true, 'Emergency Number Is Required'],
-    maxlength: [11, 'Emergency Contact Number Can not more then 11 Number'],
-    trim: true,
-  },
-  presentAddress: {
-    type: String,
-    required: [true, 'Present Address Must be Needed'],
-    trim: true,
-  },
-  permanentAddress: {
-    type: String,
-    required: [true, 'Permanent Address Is Required'],
-    trim: true,
-  },
-  profileImg: {
-    type: String,
-  },
-  id: {
-    type: String,
-  },
-  password:{
-    type:String,
-    required:[true,'Password is Required'],
-    maxlength:[20, 'Password can not be more than 20']
-  },
-  name: {
-    type: studentNameSchema,
-    required: [true, 'Student Name Must be Inputed'],
-  },
-  localGurdian: {
-    type: localGurdianSchema,
-    required: [true, 'Local Guridan Information need to be Inputed'],
-  },
-  guardian: {
-    type: guardianSchema,
-    required: [true, 'Guardian Information need to be Inputed'],
-  },
-  gender: {
-    type: String,
-    enum: {
-      values: ['male', 'female'],
-      message: '{VALUE} This Gender Does not Exist',
+const studentSchema = new Schema<IStudent, IStudentModel>(
+  {
+    dateOfBirth: {
+      type: String,
+      required: [true, 'Student Date of Birth Is Required'],
+      trim: true,
     },
-    required: [true, 'Gender Need To Be Inputed'],
-  },
-  bloogGroup: {
-    type: String,
-    enum: {
-      values: ['A+', 'A-', 'B+', 'B-', 'O-', 'O+', 'AB+', 'AB-'],
-      message: '{VALUE} This is no valid blood group',
+    email: {
+      type: String,
+      required: [true, 'Student Email Is Required'],
+      trim: true,
     },
-    required: [true, 'Blood Group Needed'],
+    contactNo: {
+      type: String,
+      required: [true, 'Student Contact Number Is Required'],
+      maxlength: [11, 'Student Contact Number Can not more then 11 Number'],
+      trim: true,
+    },
+    emergencyContactNo: {
+      type: String,
+      required: [true, 'Emergency Number Is Required'],
+      maxlength: [11, 'Emergency Contact Number Can not more then 11 Number'],
+      trim: true,
+    },
+    presentAddress: {
+      type: String,
+      required: [true, 'Present Address Must be Needed'],
+      trim: true,
+    },
+    permanentAddress: {
+      type: String,
+      required: [true, 'Permanent Address Is Required'],
+      trim: true,
+    },
+    profileImg: {
+      type: String,
+    },
+    id: {
+      type: String,
+    },
+    password: {
+      type: String,
+      required: [true, 'Password is Required'],
+      maxlength: [20, 'Password can not be more than 20'],
+    },
+    name: {
+      type: studentNameSchema,
+      required: [true, 'Student Name Must be Inputed'],
+    },
+    localGurdian: {
+      type: localGurdianSchema,
+      required: [true, 'Local Guridan Information need to be Inputed'],
+    },
+    guardian: {
+      type: guardianSchema,
+      required: [true, 'Guardian Information need to be Inputed'],
+    },
+    gender: {
+      type: String,
+      enum: {
+        values: ['male', 'female'],
+        message: '{VALUE} This Gender Does not Exist',
+      },
+      required: [true, 'Gender Need To Be Inputed'],
+    },
+    bloogGroup: {
+      type: String,
+      enum: {
+        values: ['A+', 'A-', 'B+', 'B-', 'O-', 'O+', 'AB+', 'AB-'],
+        message: '{VALUE} This is no valid blood group',
+      },
+      required: [true, 'Blood Group Needed'],
+    },
+    isActive: {
+      type: String,
+      enum: ['active', 'blocked'],
+      default: 'active',
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
-  isActive: {
-    type: String,
-    enum: ['active', 'blocked'],
-    default: 'active',
+  {
+    toJSON: {
+      virtuals: true,
+    },
   },
-  isDeleted:{
-    type:Boolean,
-    default: false
-  },
-});
+);
+
+
+
+// virtual
+
+studentSchema.virtual('fullName').get(function(){
+  return(
+    `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`
+  )
+})
+
 
 // pre save middleware/hook : will work on create()
 
