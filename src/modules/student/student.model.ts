@@ -3,9 +3,8 @@ import {
   IGuardian,
   ILocalGuardian,
   IStudent,
-  IStudentMethods,
+  IStudentModel,
   IStudentName,
-  TStudentModel,
 } from './student.interface';
 
 
@@ -105,7 +104,7 @@ const localGurdianSchema = new Schema<ILocalGuardian>({
 
 // Schema
 
-const studentSchema = new Schema<IStudent,TStudentModel,IStudentMethods>({
+const studentSchema = new Schema<IStudent, IStudentModel>({
   dateOfBirth: {
     type: String,
     required: [true, 'Student Date of Birth Is Required'],
@@ -179,12 +178,22 @@ const studentSchema = new Schema<IStudent,TStudentModel,IStudentMethods>({
   },
 });
 
-studentSchema.methods.isStudentExists = async function (id:string) {
-  const existStudent = await Student.findOne({id});
+
+// Static method
+studentSchema.statics.isStudentExists = async function (id:string) {
+  const existStudent = await Student.findOne({id})
   return existStudent;
 }
 
-export const Student = model<IStudent,TStudentModel>('student',studentSchema)
+
+
+// instance method
+// studentSchema.methods.isStudentExists = async function (id:string) {
+//   const existStudent = await Student.findOne({id});
+//   return existStudent;
+// }
+
+export const Student = model<IStudent,IStudentModel>('student',studentSchema)
 
 
 
