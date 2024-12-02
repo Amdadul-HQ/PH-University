@@ -3,8 +3,10 @@ import {
   IGuardian,
   ILocalGuardian,
   IStudent,
-  IStudentModel,
+  IStudentMethods,
+  // IStudentModel,
   IStudentName,
+  TStudentModel,
 } from './student.interface';
 
 
@@ -104,7 +106,7 @@ const localGurdianSchema = new Schema<ILocalGuardian>({
 
 // Schema
 
-const studentSchema = new Schema<IStudent, IStudentModel>({
+const studentSchema = new Schema<IStudent, TStudentModel,IStudentMethods>({
   dateOfBirth: {
     type: String,
     required: [true, 'Student Date of Birth Is Required'],
@@ -191,7 +193,6 @@ studentSchema.post("save",function(){
 
 
 
-
 // createing a statice method
 studentSchema.statics.isStudentExists = async function (id:string) {
   const existingStudent = await Student.findOne({id})
@@ -208,4 +209,5 @@ studentSchema.statics.isStudentExists = async function (id:string) {
 
 
 // Mdel
-export const Student = model<IStudent, IStudentModel>('Student', studentSchema);
+export const Student = model<IStudent, TStudentModel>('Student', studentSchema);
+

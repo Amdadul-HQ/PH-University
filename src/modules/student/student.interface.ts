@@ -39,18 +39,22 @@ export interface IStudent {
 }
 
 // for creating static
-export interface IStudentModel extends Model<IStudent> {
-  isStudentExists(id:string):Promise<IStudent | null>
-}
+// export interface IStudentModel extends Model<IStudent> {
+//   isStudentExists(id:string):Promise<IStudent | null>
+// }
 
 
 // For createing instance
-// export interface IStudentMethods {
-//   isStudentExists(id: string): Promise<IStudent | null>;
-// }
+export interface IStudentMethods {
+  isStudentExists(id: string): Promise<IStudent | null>;
+}
+
+
+// create new model type that know about IStudentMethods 
+export type TStudentModel = Model<IStudent, Record<string,never>, IStudentMethods>;
 
 // export type TStudentModel = Model<
-//   IStudent,
-//   Record<string, never>,
-//   IStudentMethods
+//   IStudent
+  // Record<string, never>,
+  // IStudentMethods
 // >;

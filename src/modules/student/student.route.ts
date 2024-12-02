@@ -12,4 +12,7 @@ StudentRouter.get('/get-all-students', StudentControllers.getAllStudent);
 // Get Single Students
 StudentRouter.get('/:studentId', StudentControllers.getSingelStudent);
 
+// Delet Students
+StudentRouter.delete('/:studentId',)
+
 export const StudentRouters = StudentRouter;
