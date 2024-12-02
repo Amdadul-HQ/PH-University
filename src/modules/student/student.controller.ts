@@ -98,9 +98,9 @@ const deleteSingelStudent = async (req: Request, res: Response) => {
 const updateSingleStudent = async (req: Request, res: Response) => {
   try {
     const { studentId } = req.params;
-    const updateData = req.body;
+    const {student} = req.body;
 
-    const result = await StudentServices.updateStudentIntoDB(studentId,updateData)
+    const result = await StudentServices.updateStudentIntoDB(studentId,student)
 
     res.status(200).json({
       success: true,
