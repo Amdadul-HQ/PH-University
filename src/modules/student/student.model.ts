@@ -178,6 +178,20 @@ const studentSchema = new Schema<IStudent, IStudentModel>({
   },
 });
 
+
+// pre save middleware /hook
+studentSchema.pre('save',function(){
+  console.log(this,'pre hook : we will save to data');
+});
+
+// post save middleware/hook
+studentSchema.post("save",function(){
+  console.log(this,'post hook: we saved our data');
+})
+
+
+
+
 // createing a statice method
 studentSchema.statics.isStudentExists = async function (id:string) {
   const existingStudent = await Student.findOne({id})
