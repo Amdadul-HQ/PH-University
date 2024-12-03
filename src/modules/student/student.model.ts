@@ -6,8 +6,8 @@ import {
   IStudentModel,
   IStudentName,
 } from './student.interface';
-import bcrypt from 'bcrypt';
-import config from '../../app/config';
+// import bcrypt from 'bcrypt';
+// import config from '../../app/config';
 
 
 // sub sechema
@@ -152,11 +152,6 @@ const studentSchema = new Schema<IStudent, IStudentModel>(
       unique:true,
       ref:'User'
     },
-    password: {
-      type: String,
-      required: [true, 'Password is Required'],
-      maxlength: [20, 'Password can not be more than 20'],
-    },
     name: {
       type: studentNameSchema,
       required: [true, 'Student Name Must be Inputed'],
@@ -210,28 +205,27 @@ studentSchema.virtual('fullName').get(function(){
 
 // pre save middleware/hook : will work on create()
 
-studentSchema.pre('save',async function(next){
+// studentSchema.pre('save',async function(next){
   
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const student = this
-// hasing password
+//   // eslint-disable-next-line @typescript-eslint/no-this-alias
+//   const student = this
+// // hasing password
 
-student.password = await bcrypt.hash(
-  student.password,
-  Number(config.bycrypt_salt_rounds),
-);
- next()
-});
+// student.password = await bcrypt.hash(
+//   student.password,
+//   Number(config.bycrypt_salt_rounds),
+// );
+//  next()
+// });
 
-// post save middleware/hook
+// // post save middleware/hook
 
-studentSchema.post('save',function(doc,next){
+// studentSchema.post('save',function(doc,next){
   
-  doc.password =''
-  console.log(doc,'Post hook: we save our data');
+//   doc.password =''
 
-  next()
-})
+//   next()
+// })
 
 // Find Middle ware
 studentSchema.pre('find',function(next){
