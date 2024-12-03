@@ -146,6 +146,12 @@ const studentSchema = new Schema<IStudent, IStudentModel>(
     id: {
       type: String,
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true,'User id is required'],
+      unique:true,
+      ref:'User'
+    },
     password: {
       type: String,
       required: [true, 'Password is Required'],
@@ -178,11 +184,6 @@ const studentSchema = new Schema<IStudent, IStudentModel>(
         message: '{VALUE} This is no valid blood group',
       },
       required: [true, 'Blood Group Needed'],
-    },
-    isActive: {
-      type: String,
-      enum: ['active', 'blocked'],
-      default: 'active',
     },
     isDeleted: {
       type: Boolean,

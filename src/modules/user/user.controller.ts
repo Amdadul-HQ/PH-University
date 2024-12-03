@@ -1,18 +1,21 @@
+import { Request, Response } from "express";
+import { UserService } from "./user.service";
+
 const createStudent = async (req: Request, res: Response) => {
   try {
-    const { student } = req.body;
+    const { password,student } = req.body;
 
-    const zodValidation = studentZodSchema.safeParse(student);
+    // const zodValidation = studentZodSchema.safeParse(student);
 
-    if (!zodValidation.success) {
-      res.status(500).json({
-        success: false,
-        message: 'Something went wrong',
-        error: zodValidation.error.format(),
-      });
-    }
+    // if (!zodValidation.success) {
+    //   res.status(500).json({
+    //     success: false,
+    //     message: 'Something went wrong',
+    //     error: zodValidation.error.format(),
+    //   });
+    // }
     // will call service func to send this data
-    const result = await StudentServices.createStudentInToDB(student);
+    const result = await UserService.createStudentInToDB(password,student);
 
     // send response
     res.status(201).json({
@@ -28,3 +31,8 @@ const createStudent = async (req: Request, res: Response) => {
     });
   }
 };
+
+
+export const UserController = {
+    createStudent
+}
