@@ -1,7 +1,16 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { StudentServices } from './student.service';
 import sendResponse from '../../app/utils/sendResponse';
 import httpStatus from 'http-status';
+
+const  catchAsync = (fn:RequestHandler) => {
+
+  return (req:Request,res:Response,next:NextFunction)=>{
+    Promise.resolve(fn(req,res,next)).catch(err => next(err));
+  }
+}
+
+
 // import { studentZodSchema } from './student.validate';
 
 // const createStudent = async (req: Request, res: Response) => {
@@ -36,8 +45,8 @@ import httpStatus from 'http-status';
 // };
 
 // Get All student
-const getAllStudent = async (req: Request, res: Response,next:NextFunction) => {
-  try {
+const getAllStudent = catchAsync(async (req, res,next) => {
+
     const result = await StudentServices.getAllStudentsFromDB();
 
     // send response
@@ -47,16 +56,11 @@ const getAllStudent = async (req: Request, res: Response,next:NextFunction) => {
       message: 'All Student data',
       data: result,
     });
-  } catch (error) {
-    next(error)
-  }
-};
+});
 
 // Get Singel Student
-const getSingelStudent = async (req: Request, res: Response,next:NextFunction) => {
-  try {
+const getSingelStudent = catchAsync( async (req, res,next) => {
     const { studentId } = req.params;
-
     const result = await StudentServices.getSingleStudentsFromDB(studentId);
      sendResponse(res, {
        success: true,
@@ -64,15 +68,11 @@ const getSingelStudent = async (req: Request, res: Response,next:NextFunction) =
        message: 'single Student data',
        data: result,
      });
-  } catch (error) {
-    next(error)
-  }
-};
 
-const deleteSingelStudent = async (req: Request, res: Response,next:NextFunction) => {
-  try {
+})
+
+const deleteSingelStudent = catchAsync(async (req, res,next) => {
     const { studentId } = req.params;
-
     const result = await StudentServices.deleteStudentFromDB(studentId);
     sendResponse(res, {
       success: true,
@@ -81,14 +81,10 @@ const deleteSingelStudent = async (req: Request, res: Response,next:NextFunction
       data: result,
     });
     
-  } catch (error) {
-    next(error)
-  }
-};
+});
 
 // Update Student Information
-const updateSingleStudent = async (req: Request, res: Response,next:NextFunction) => {
-  try {
+const updateSingleStudent = catchAsync(async (req, res,next) => {
     const { studentId } = req.params;
     const {student} = req.body;
 
@@ -99,10 +95,7 @@ const updateSingleStudent = async (req: Request, res: Response,next:NextFunction
       message: 'Student data Updated',
       data: result,
     });
-  } catch (error) {
-    next(error)
-  }
-};
+})
 
 export const StudentControllers = {
   // createStudent,
