@@ -40,10 +40,12 @@ const academicSemesterSchema = new Schema<IAcademicSemester>(
     startMonth:{
         type:String,
         enum:months,
+        required:true
     },
     endMonth:{
         type:String,
         enum:months,
+        required:true
     }
   },
   {
