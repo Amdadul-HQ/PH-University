@@ -12,6 +12,10 @@ export type TMonths =
   | "November"
   | "December";
 
+export interface IAcademicSemesterMapper {
+    [key:string]:string
+}
+
 export type TAcademicSemesterName = 'Autumn' | 'Summer' | 'Fall';
 
 export type TAcademicSemesterCode = '01' | '02' | '03';
