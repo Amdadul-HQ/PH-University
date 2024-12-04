@@ -106,7 +106,7 @@ const localGurdianSchema = new Schema<ILocalGuardian>({
 
 // Schema
 
-const studentSchema = new Schema<IStudent, IStudentModel>(
+const studentValidationSchema = new Schema<IStudent, IStudentModel>(
   {
     dateOfBirth: {
       type: String,
@@ -148,9 +148,9 @@ const studentSchema = new Schema<IStudent, IStudentModel>(
     },
     user: {
       type: Schema.Types.ObjectId,
-      required: [true,'User id is required'],
-      unique:true,
-      ref:'User'
+      required: [true, 'User id is required'],
+      unique: true,
+      ref: 'User',
     },
     name: {
       type: studentNameSchema,
@@ -196,16 +196,14 @@ const studentSchema = new Schema<IStudent, IStudentModel>(
 
 // virtual
 
-studentSchema.virtual('fullName').get(function(){
-  return(
-    `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`
-  )
-})
+studentValidationSchema.virtual('fullName').get(function () {
+  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+});
 
 
 // pre save middleware/hook : will work on create()
 
-// studentSchema.pre('save',async function(next){
+// studentValidationSchema.pre('save',async function(next){
   
 //   // eslint-disable-next-line @typescript-eslint/no-this-alias
 //   const student = this
@@ -220,7 +218,7 @@ studentSchema.virtual('fullName').get(function(){
 
 // // post save middleware/hook
 
-// studentSchema.post('save',function(doc,next){
+// studentValidationSchema.post('save',function(doc,next){
   
 //   doc.password =''
 
@@ -228,36 +226,38 @@ studentSchema.virtual('fullName').get(function(){
 // })
 
 // Find Middle ware
-studentSchema.pre('find',function(next){
-  this.find({isDeleted:{$ne:true}})
-  console.log(this);
-  next()
-})
+studentValidationSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
 
 // findOne Middle ware
-studentSchema.pre('findOne',function(next){
-  this.findOne({isDeleted:{$ne:true}})
-  next()
-})
+studentValidationSchema.pre('findOne', function (next) {
+  this.findOne({ isDeleted: { $ne: true } });
+  next();
+});
 
 
 
 
 // Static method
-studentSchema.statics.isStudentExists = async function (id:string) {
-  const existStudent = await Student.findOne({id})
+studentValidationSchema.statics.isStudentExists = async function (id: string) {
+  const existStudent = await Student.findOne({ id });
   return existStudent;
-}
+};
 
 
 
 // instance method
-// studentSchema.methods.isStudentExists = async function (id:string) {
+// studentValidationSchema.methods.isStudentExists = async function (id:string) {
 //   const existStudent = await Student.findOne({id});
 //   return existStudent;
 // }
 
-export const Student = model<IStudent,IStudentModel>('student',studentSchema)
+export const Student = model<IStudent, IStudentModel>(
+  'student',
+  studentValidationSchema,
+);
 
 
 

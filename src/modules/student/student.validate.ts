@@ -57,35 +57,38 @@ const localGuardianSchema = z.object({
 });
 
 // Main schema: Student
-const studentSchema = z.object({
-  dateOfBirth: z.string().min(1, 'Student Date of Birth is Required'),
-  email: z
-    .string()
-    .email('Invalid Email Address')
-    .min(1, 'Student Email is Required'),
-  contactNo: z
-    .string()
-    .min(1, 'Student Contact Number is Required')
-    .max(11, 'Student Contact Number Cannot Be More Than 11 Characters'),
-  emergencyContactNo: z
-    .string()
-    .min(1, 'Emergency Number is Required')
-    .max(11, 'Emergency Contact Number Cannot Be More Than 11 Characters'),
-  presentAddress: z.string().min(1, 'Present Address Must Be Provided'),
-  permanentAddress: z.string().min(1, 'Permanent Address is Required'),
-  profileImg: z.string().optional(),
-  id: z.string().optional(),
-  password: z.string().max(20),
-  name: studentNameSchema,
-  localGurdian: localGuardianSchema,
-  guardian: guardianSchema,
-  gender: z.enum(['male', 'female'], { required_error: 'Gender is Required' }),
-  bloogGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'O-', 'O+', 'AB+', 'AB-'], {
-    required_error: 'Blood Group is Required',
+const studentValidationSchema = z.object({
+  body: z.object({
+    password: z.string().max(20),
+    student: z.object({
+      dateOfBirth: z.string().min(1, 'Student Date of Birth is Required'),
+      email: z
+        .string()
+        .email('Invalid Email Address')
+        .min(1, 'Student Email is Required'),
+      contactNo: z
+        .string()
+        .min(1, 'Student Contact Number is Required')
+        .max(11, 'Student Contact Number Cannot Be More Than 11 Characters'),
+      emergencyContactNo: z
+        .string()
+        .min(1, 'Emergency Number is Required')
+        .max(11, 'Emergency Contact Number Cannot Be More Than 11 Characters'),
+      presentAddress: z.string().min(1, 'Present Address Must Be Provided'),
+      permanentAddress: z.string().min(1, 'Permanent Address is Required'),
+      profileImg: z.string().optional(),
+      name: studentNameSchema,
+      localGurdian: localGuardianSchema,
+      guardian: guardianSchema,
+      gender: z.enum(['male', 'female'], {
+        required_error: 'Gender is Required',
+      }),
+      bloogGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'O-', 'O+', 'AB+', 'AB-'], {
+        required_error: 'Blood Group is Required',
+      }),
+    }),
   }),
-  isActive: z.enum(['active', 'blocked']).default('active'),
-  isDeleted:z.boolean().default(false)
 });
 
 // Export
-export const studentZodSchema = studentSchema;
+export const studentZodSchema = { studentValidationSchema };

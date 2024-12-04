@@ -41,7 +41,6 @@ const deleteSingelStudent = catchAsync(async (req, res) => {
     message: 'single Student data deleted',
     data: result,
   });
-  
 });
 
 // Update Student Information

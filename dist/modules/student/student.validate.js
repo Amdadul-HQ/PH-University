@@ -52,7 +52,7 @@ const localGuardianSchema = zod_1.z.object({
         .max(11, 'Local Contact Number Cannot Be More Than 11 Characters'),
 });
 // Main schema: Student
-const studentSchema = zod_1.z.object({
+const studentValidationSchema = zod_1.z.object({
     dateOfBirth: zod_1.z.string().min(1, 'Student Date of Birth is Required'),
     email: zod_1.z
         .string()
@@ -80,4 +80,4 @@ const studentSchema = zod_1.z.object({
     isActive: zod_1.z.enum(['active', 'blocked']).default('active'),
 });
 // Export
-exports.studentZodSchema = studentSchema;
+exports.studentZodSchema = studentValidationSchema;

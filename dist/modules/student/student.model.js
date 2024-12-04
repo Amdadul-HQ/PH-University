@@ -100,7 +100,7 @@ const localGurdianSchema = new mongoose_1.Schema({
     },
 });
 // Schema
-const studentSchema = new mongoose_1.Schema({
+const studentValidationSchema = new mongoose_1.Schema({
     dateOfBirth: {
         type: String,
         required: [true, 'Student Date of Birth Is Required'],
@@ -174,16 +174,16 @@ const studentSchema = new mongoose_1.Schema({
     },
 });
 // createing a statice method
-studentSchema.statics.isStudentExists = function (id) {
+studentValidationSchema.statics.isStudentExists = function (id) {
     return __awaiter(this, void 0, void 0, function* () {
         const existingStudent = yield exports.Student.findOne({ id });
         return existingStudent;
     });
 };
 // Checking Student exist
-// studentSchema.methods.isStudentExists = async function (id:string) {
+// studentValidationSchema.methods.isStudentExists = async function (id:string) {
 //   const existingStudent = await Student.findOne({id})
 //   return existingStudent;
 // }
 // Mdel
-exports.Student = (0, mongoose_1.model)('Student', studentSchema);
+exports.Student = (0, mongoose_1.model)('Student', studentValidationSchema);
