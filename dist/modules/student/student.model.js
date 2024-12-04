@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Student = void 0;
 const mongoose_1 = require("mongoose");
 // sub sechema
-const studentNameSchema = new mongoose_1.Schema({
+const studentValidationSchema = new mongoose_1.Schema({
     firstName: {
         type: String,
         required: [true, 'Student First Name Is Required'],
@@ -38,7 +38,7 @@ const studentNameSchema = new mongoose_1.Schema({
         trim: true,
     },
 });
-const guardianSchema = new mongoose_1.Schema({
+const guardianValidationSchema = new mongoose_1.Schema({
     fatherName: {
         type: String,
         required: [true, 'Father Name is Required'],
@@ -100,7 +100,7 @@ const localGurdianSchema = new mongoose_1.Schema({
     },
 });
 // Schema
-const studentValidationSchema = new mongoose_1.Schema({
+const createStudentValidationSchema = new mongoose_1.Schema({
     dateOfBirth: {
         type: String,
         required: [true, 'Student Date of Birth Is Required'],
@@ -140,7 +140,7 @@ const studentValidationSchema = new mongoose_1.Schema({
         type: String,
     },
     name: {
-        type: studentNameSchema,
+        type: studentValidationSchema,
         required: [true, 'Student Name Must be Inputed'],
     },
     localGurdian: {
@@ -148,7 +148,7 @@ const studentValidationSchema = new mongoose_1.Schema({
         required: [true, 'Local Guridan Information need to be Inputed'],
     },
     guardian: {
-        type: guardianSchema,
+        type: guardianValidationSchema,
         required: [true, 'Guardian Information need to be Inputed'],
     },
     gender: {
@@ -174,16 +174,16 @@ const studentValidationSchema = new mongoose_1.Schema({
     },
 });
 // createing a statice method
-studentValidationSchema.statics.isStudentExists = function (id) {
+createStudentValidationSchema.statics.isStudentExists = function (id) {
     return __awaiter(this, void 0, void 0, function* () {
         const existingStudent = yield exports.Student.findOne({ id });
         return existingStudent;
     });
 };
 // Checking Student exist
-// studentValidationSchema.methods.isStudentExists = async function (id:string) {
+// createStudentValidationSchema.methods.isStudentExists = async function (id:string) {
 //   const existingStudent = await Student.findOne({id})
 //   return existingStudent;
 // }
 // Mdel
-exports.Student = (0, mongoose_1.model)('Student', studentValidationSchema);
+exports.Student = (0, mongoose_1.model)('Student', createStudentValidationSchema);

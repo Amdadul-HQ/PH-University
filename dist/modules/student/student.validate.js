@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.studentZodSchema = void 0;
 const zod_1 = require("zod");
 // Sub-schema: Student Name
-const studentNameSchema = zod_1.z.object({
+const studentValidationSchema = zod_1.z.object({
     firstName: zod_1.z
         .string()
         .min(1, 'Student First Name is Required')
@@ -18,7 +18,7 @@ const studentNameSchema = zod_1.z.object({
         .max(10, 'Student Last Name Can Not Be More Than 10 Characters'),
 });
 // Sub-schema: Guardian
-const guardianSchema = zod_1.z.object({
+const guardianValidationSchema = zod_1.z.object({
     fatherName: zod_1.z
         .string()
         .min(1, 'Father Name is Required')
@@ -39,7 +39,7 @@ const guardianSchema = zod_1.z.object({
         .max(11, 'Mother Contact Number Cannot Be More Than 11 Characters'),
 });
 // Sub-schema: Local Guardian
-const localGuardianSchema = zod_1.z.object({
+const localGuardianValidationSchema = zod_1.z.object({
     name: zod_1.z
         .string()
         .min(1, 'Local Guardian Name is Required')
@@ -52,7 +52,7 @@ const localGuardianSchema = zod_1.z.object({
         .max(11, 'Local Contact Number Cannot Be More Than 11 Characters'),
 });
 // Main schema: Student
-const studentValidationSchema = zod_1.z.object({
+const createStudentValidationSchema = zod_1.z.object({
     dateOfBirth: zod_1.z.string().min(1, 'Student Date of Birth is Required'),
     email: zod_1.z
         .string()
@@ -70,9 +70,9 @@ const studentValidationSchema = zod_1.z.object({
     permanentAddress: zod_1.z.string().min(1, 'Permanent Address is Required'),
     profileImg: zod_1.z.string().optional(),
     id: zod_1.z.string().optional(),
-    name: studentNameSchema,
-    localGurdian: localGuardianSchema,
-    guardian: guardianSchema,
+    name: studentValidationSchema,
+    localGurdian: localGuardianValidationSchema,
+    guardian: guardianValidationSchema,
     gender: zod_1.z.enum(['male', 'female'], { required_error: 'Gender is Required' }),
     bloogGroup: zod_1.z.enum(['A+', 'A-', 'B+', 'B-', 'O-', 'O+', 'AB+', 'AB-'], {
         required_error: 'Blood Group is Required',
@@ -80,4 +80,4 @@ const studentValidationSchema = zod_1.z.object({
     isActive: zod_1.z.enum(['active', 'blocked']).default('active'),
 });
 // Export
-exports.studentZodSchema = studentValidationSchema;
+exports.studentZodSchema = createStudentValidationSchema;

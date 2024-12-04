@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Sub-schema: Student Name
-const studentNameSchema = z.object({
+const studentValidationSchema = z.object({
   firstName: z
     .string()
     .min(1, 'Student First Name is Required')
@@ -11,9 +11,7 @@ const studentNameSchema = z.object({
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase() === value,
       { message: 'First Name must be capitalized' },
     ),
-  middleName: z
-    .string()
-    .optional(),
+  middleName: z.string().optional(),
   lastName: z
     .string()
     .min(1, 'Student Last Name is Required')
@@ -21,7 +19,7 @@ const studentNameSchema = z.object({
 });
 
 // Sub-schema: Guardian
-const guardianSchema = z.object({
+const guardianValidationSchema = z.object({
   fatherName: z
     .string()
     .min(1, 'Father Name is Required')
@@ -43,7 +41,7 @@ const guardianSchema = z.object({
 });
 
 // Sub-schema: Local Guardian
-const localGuardianSchema = z.object({
+const localGuardianValidationSchema = z.object({
   name: z
     .string()
     .min(1, 'Local Guardian Name is Required')
@@ -57,7 +55,7 @@ const localGuardianSchema = z.object({
 });
 
 // Main schema: Student
-const studentValidationSchema = z.object({
+const createStudentValidationSchema = z.object({
   body: z.object({
     password: z.string().max(20),
     student: z.object({
@@ -77,9 +75,9 @@ const studentValidationSchema = z.object({
       presentAddress: z.string().min(1, 'Present Address Must Be Provided'),
       permanentAddress: z.string().min(1, 'Permanent Address is Required'),
       profileImg: z.string().optional(),
-      name: studentNameSchema,
-      localGurdian: localGuardianSchema,
-      guardian: guardianSchema,
+      name: studentValidationSchema,
+      localGurdian: localGuardianValidationSchema,
+      guardian: guardianValidationSchema,
       gender: z.enum(['male', 'female'], {
         required_error: 'Gender is Required',
       }),
@@ -91,4 +89,4 @@ const studentValidationSchema = z.object({
 });
 
 // Export
-export const studentZodSchema = { studentValidationSchema };
+export const studentZodSchema = { createStudentValidationSchema };

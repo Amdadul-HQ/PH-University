@@ -12,7 +12,7 @@ import {
 
 // sub sechema
 
-const studentNameSchema = new Schema<IStudentName>({
+const studentValidationSchema = new Schema<IStudentName>({
   firstName: {
     type: String,
     required: [true, 'Student First Name Is Required'],
@@ -24,7 +24,7 @@ const studentNameSchema = new Schema<IStudentName>({
           value.charAt(0).toUpperCase() + value.slice(1).toLocaleLowerCase();
         return firstNameStr === value;
       },
-      message:'{VALUE} is not in capitalize'
+      message: '{VALUE} is not in capitalize',
     },
   },
   middleName: {
@@ -40,7 +40,7 @@ const studentNameSchema = new Schema<IStudentName>({
   },
 });
 
-const guardianSchema = new Schema<IGuardian>({
+const guardianValidationSchema = new Schema<IGuardian>({
   fatherName: {
     type: String,
     required: [true, 'Father Name is Required'],
@@ -106,7 +106,7 @@ const localGurdianSchema = new Schema<ILocalGuardian>({
 
 // Schema
 
-const studentValidationSchema = new Schema<IStudent, IStudentModel>(
+const createStudentValidationSchema = new Schema<IStudent, IStudentModel>(
   {
     dateOfBirth: {
       type: String,
@@ -153,7 +153,7 @@ const studentValidationSchema = new Schema<IStudent, IStudentModel>(
       ref: 'User',
     },
     name: {
-      type: studentNameSchema,
+      type: studentValidationSchema,
       required: [true, 'Student Name Must be Inputed'],
     },
     localGurdian: {
@@ -161,7 +161,7 @@ const studentValidationSchema = new Schema<IStudent, IStudentModel>(
       required: [true, 'Local Guridan Information need to be Inputed'],
     },
     guardian: {
-      type: guardianSchema,
+      type: guardianValidationSchema,
       required: [true, 'Guardian Information need to be Inputed'],
     },
     gender: {
@@ -192,19 +192,16 @@ const studentValidationSchema = new Schema<IStudent, IStudentModel>(
   },
 );
 
-
-
 // virtual
 
-studentValidationSchema.virtual('fullName').get(function () {
+createStudentValidationSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 
-
 // pre save middleware/hook : will work on create()
 
-// studentValidationSchema.pre('save',async function(next){
-  
+// createStudentValidationSchema.pre('save',async function(next){
+
 //   // eslint-disable-next-line @typescript-eslint/no-this-alias
 //   const student = this
 // // hasing password
@@ -218,45 +215,42 @@ studentValidationSchema.virtual('fullName').get(function () {
 
 // // post save middleware/hook
 
-// studentValidationSchema.post('save',function(doc,next){
-  
+// createStudentValidationSchema.post('save',function(doc,next){
+
 //   doc.password =''
 
 //   next()
 // })
 
 // Find Middle ware
-studentValidationSchema.pre('find', function (next) {
+createStudentValidationSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
 
 // findOne Middle ware
-studentValidationSchema.pre('findOne', function (next) {
+createStudentValidationSchema.pre('findOne', function (next) {
   this.findOne({ isDeleted: { $ne: true } });
   next();
 });
 
-
-
-
 // Static method
-studentValidationSchema.statics.isStudentExists = async function (id: string) {
+createStudentValidationSchema.statics.isStudentExists = async function (
+  id: string,
+) {
   const existStudent = await Student.findOne({ id });
   return existStudent;
 };
 
-
-
 // instance method
-// studentValidationSchema.methods.isStudentExists = async function (id:string) {
+// createStudentValidationSchema.methods.isStudentExists = async function (id:string) {
 //   const existStudent = await Student.findOne({id});
 //   return existStudent;
 // }
 
 export const Student = model<IStudent, IStudentModel>(
   'student',
-  studentValidationSchema,
+  createStudentValidationSchema,
 );
 
 
