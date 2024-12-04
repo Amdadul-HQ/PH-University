@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Model, Types } from "mongoose";
 
 
@@ -28,7 +29,7 @@ export interface IStudent {
   password: string;
   name: IStudentName;
   gender: 'male' | 'female';
-  dateOfBirth: string;
+  dateOfBirth: Date;
   email: string;
   contactNo: string;
   emergencyContactNo: string;

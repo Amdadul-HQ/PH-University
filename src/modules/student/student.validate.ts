@@ -59,7 +59,7 @@ const createStudentValidationSchema = z.object({
   body: z.object({
     password: z.string().max(20),
     student: z.object({
-      dateOfBirth: z.string().min(1, 'Student Date of Birth is Required'),
+      dateOfBirth: z.date().optional(),
       email: z
         .string()
         .email('Invalid Email Address')
