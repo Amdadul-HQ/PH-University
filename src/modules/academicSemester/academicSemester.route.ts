@@ -13,6 +13,10 @@ AcademicSemesterRouter.post(
   AcademicSemesterController.createAcademicSemester,
 );
 
-AcademicSemesterRouter.get('/',AcademicSemesterController.getAcademicSemester)
+// Get all Academic Semester
+AcademicSemesterRouter.get('/',AcademicSemesterController.getAcademicSemester);
+
+// Singel Academic Semester
+AcademicSemesterRouter.get('/:academicSemesterId',AcademicSemesterController.getSingleAcademicSemeter)
 
 export const AcademicSemesterRoutes = AcademicSemesterRouter;

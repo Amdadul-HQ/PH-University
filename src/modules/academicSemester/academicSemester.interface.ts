@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export type TMonths =
   | "January"
   | "February"
@@ -27,3 +28,4 @@ export interface IAcademicSemester {
     startMonth: TMonths,
     endMonth:TMonths
 }
+

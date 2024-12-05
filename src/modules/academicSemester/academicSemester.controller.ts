@@ -29,7 +29,24 @@ const getAcademicSemester = catchAsync(async(req,res)=>{
     });
 })
 
+const getSingleAcademicSemeter = catchAsync(async(req,res)=>{
+
+    const academicSemesterId = req.params.academicSemesterId;
+
+    const result =
+      await AcademicSemesterServices.getSingleAcademicSemeterFromDB(
+        academicSemesterId,
+      );
+     sendResponse(res, {
+       success: true,
+       statusCode: httpStatus.OK,
+       message: 'Single Academic Semester data',
+       data: result,
+     });
+})
+
 export const AcademicSemesterController = {
   createAcademicSemester,
-  getAcademicSemester
+  getAcademicSemester,
+  getSingleAcademicSemeter
 };
