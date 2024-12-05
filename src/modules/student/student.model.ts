@@ -109,7 +109,7 @@ const localGurdianSchema = new Schema<ILocalGuardian>({
 const createStudentValidationSchema = new Schema<IStudent, IStudentModel>(
   {
     dateOfBirth: {
-      type: Date,
+      type: String,
       required: [true, 'Student Date of Birth Is Required'],
       trim: true,
     },
@@ -145,6 +145,10 @@ const createStudentValidationSchema = new Schema<IStudent, IStudentModel>(
     },
     id: {
       type: String,
+    },
+    admissionSemester:{
+      type:Schema.Types.ObjectId,
+      ref:'AcademicSemester'
     },
     user: {
       type: Schema.Types.ObjectId,

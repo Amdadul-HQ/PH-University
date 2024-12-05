@@ -59,7 +59,7 @@ const createStudentValidationSchema = z.object({
   body: z.object({
     password: z.string().max(20),
     student: z.object({
-      dateOfBirth: z.date().optional(),
+      dateOfBirth: z.string().optional(),
       email: z
         .string()
         .email('Invalid Email Address')
@@ -72,6 +72,7 @@ const createStudentValidationSchema = z.object({
         .string()
         .min(1, 'Emergency Number is Required')
         .max(11, 'Emergency Contact Number Cannot Be More Than 11 Characters'),
+      admissionSemester:z.string(),
       presentAddress: z.string().min(1, 'Present Address Must Be Provided'),
       permanentAddress: z.string().min(1, 'Permanent Address is Required'),
       profileImg: z.string().optional(),

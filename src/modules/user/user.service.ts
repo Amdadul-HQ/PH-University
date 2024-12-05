@@ -1,8 +1,11 @@
 import config from "../../app/config";
+import { IAcademicSemester } from "../academicSemester/academicSemester.interface";
+import { AcademicSemester } from "../academicSemester/academicSemester.model";
 import { IStudent } from "../student/student.interface";
 import { Student } from "../student/student.model";
 import { IUser } from "./user.interface";
 import { User } from "./user.model";
+import { generateStudentId } from "./user.utils";
 
 const createStudentInToDB = async (password:string,studentData: IStudent) => {
   // custome instance method
@@ -21,19 +24,24 @@ const createStudentInToDB = async (password:string,studentData: IStudent) => {
 //   }
 //   const result = await Student.create(studentData);
 
-    const userData : Partial<IUser> = {};
-    userData.password = password || (config.default_pass as string);
-    // if(!password){
+// if(!password){
     //     user.password=config.default_pass as string ;
     // }
     // else{
-    //     user.password = password
-    // }
+        //     user.password = password
+        // }
+    const userData : Partial<IUser> = {};
+    userData.password = password || (config.default_pass as string);
+
+    
+
+    const admissionSemester = await AcademicSemester.findById(studentData.admissionSemester)
+
+    
+    
     userData.role = 'student';
-
-
     // manulally generate id
-    userData.id = '2030040001';
+    userData.id = generateStudentId(admissionSemester as IAcademicSemester);
 
     // 
 
