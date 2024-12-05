@@ -41,7 +41,7 @@ const createStudentInToDB = async (password:string,studentData: IStudent) => {
     
     userData.role = 'student';
     // manulally generate id
-    userData.id = generateStudentId(admissionSemester as IAcademicSemester);
+    userData.id = await generateStudentId(admissionSemester as IAcademicSemester);
 
     // 
 
