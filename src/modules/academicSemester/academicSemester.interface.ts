@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 export type TMonths =
   | "January"
   | "February"

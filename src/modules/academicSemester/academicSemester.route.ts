@@ -19,4 +19,7 @@ AcademicSemesterRouter.get('/',AcademicSemesterController.getAcademicSemester);
 // Singel Academic Semester
 AcademicSemesterRouter.get('/:academicSemesterId',AcademicSemesterController.getSingleAcademicSemeter)
 
+// Update Academic Semester
+AcademicSemesterRouter.patch('/:academicSemesterId',AcademicSemesterController.updateAcademicSemester);
+
 export const AcademicSemesterRoutes = AcademicSemesterRouter;
