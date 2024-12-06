@@ -24,3 +24,6 @@ AcademicDepartmentRouter.patch(
     '/:demartmentId',validateRequest(AcademicDepartmentValidation.updateAcademicDepartmentValidationSchema),
     AcademicDepartmentControllers.updateAcademicDepartment
 );
+
+
+export const AcademicDepartmentRoutes = AcademicDepartmentRouter;
