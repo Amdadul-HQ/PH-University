@@ -21,7 +21,7 @@ AcademicDepartmentRouter.get(
 AcademicDepartmentRouter.get('/:departmentId',AcademicDepartmentControllers.getSingleAcademicDepartment);
 
 AcademicDepartmentRouter.patch(
-    '/:demartmentId',validateRequest(AcademicDepartmentValidation.updateAcademicDepartmentValidationSchema),
+    '/:departmentId',validateRequest(AcademicDepartmentValidation.updateAcademicDepartmentValidationSchema),
     AcademicDepartmentControllers.updateAcademicDepartment
 );
 
