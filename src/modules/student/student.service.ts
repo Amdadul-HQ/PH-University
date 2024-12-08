@@ -61,8 +61,9 @@ const deleteStudentFromDB = async (id:string) =>{
     
     const isStudentExists = await Student.isStudentExists(id)
 
-    // console.log(isStudentExists,id,'service');
-    if (!isStudentExists) {
+    console.log(isStudentExists,id,'service');
+
+    if (isStudentExists == null) {
       throw new AppError(httpStatus.NOT_FOUND,'Staudent Not Found!!');
     }
 
@@ -93,10 +94,11 @@ const deleteStudentFromDB = async (id:string) =>{
 
   return deletedStudent
   }
-  catch(error){
+  catch(error:any){
     if(error){
       await session.abortTransaction();
       await session.endSession();
+      throw new AppError(httpStatus.BAD_GATEWAY,`${error.message}`)
     }
   }
 
@@ -125,11 +127,13 @@ const updateStudentIntoDB = async (id:string,updateData:Partial<IStudent> ) => {
     }
   }
 
+
   if(guardian && Object.keys(guardian).length){
     for(const[key,value] of Object.entries(guardian)){
       modifiedUpdateData[`guardian.${key}`] = value;
     }
   }
+
   if (localGurdian && Object.keys(localGurdian).length) {
     for (const [key, value] of Object.entries(localGurdian)) {
       modifiedUpdateData[`localGurdian.${key}`] = value;
