@@ -145,12 +145,16 @@ const createStudentValidationSchema = new Schema<IStudent, IStudentModel>(
     },
     id: {
       type: String,
-      required:[true,"ID is required"],
-      unique:true
+      required: [true, 'ID is required'],
+      unique: true,
     },
-    admissionSemester:{
-      type:Schema.Types.ObjectId,
-      ref:'AcademicSemester'
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicSemester',
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicDepartment',
     },
     user: {
       type: Schema.Types.ObjectId,

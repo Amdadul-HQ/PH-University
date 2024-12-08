@@ -10,7 +10,7 @@ const globalErrorHander = (
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction)=> {
-  const statusCode = 500;
+  const statusCode = err.ststusCode ||  500;
   const message = err.message || 'Something went worng';
 
     res.status(statusCode).json({
