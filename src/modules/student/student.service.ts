@@ -39,31 +39,50 @@ const getAllStudentsFromDB = async () => {
 
 // Get singel Student
 const getSingleStudentsFromDB = async (studentId: string) => {
-  const result = await Student.findOne({ id: studentId });
+  const result = await Student.findOne({ id: studentId })
+    .populate('admissionSemester')
+    .populate({
+      path: 'academicDepartment',
+      populate: {
+        path: 'academicFaculty',
+      },
+    });
   return result;
 };
 
 // Delete Student From db
 const deleteStudentFromDB = async (id:string) =>{
-  // if (!(await Student.isStudentExists(id))) {
-  //   throw new Error('Staudent Not Found!!');
-  // }
-
-
+  
+  
   const session = await mongoose.startSession();
+  
   try{
-  session.startTransaction();
-  
-  
+    session.startTransaction();
+    
+    const isStudentExists = await Student.isStudentExists(id)
+
+    // console.log(isStudentExists,id,'service');
+    if (!isStudentExists) {
+      throw new AppError(httpStatus.NOT_FOUND,'Staudent Not Found!!');
+    }
 
 
-  const deletedStudent = await Student.findByIdAndUpdate({id},{isDeleted:true},{new:true,session});
+
+  const deletedStudent = await Student.findOneAndUpdate(
+    { id },
+    { isDeleted: true },
+    { new: true, session },
+  );
 
   if(!deletedStudent){
     throw new AppError(httpStatus.BAD_REQUEST,'Failed to delete Stuedent')
   }
 
-  const deleteUser = await User.findByIdAndUpdate({id},{isDeleted:true},{new:true,session})
+  const deleteUser = await User.findOneAndUpdate(
+    { id },
+    { isDeleted: true },
+    { new: true, session },
+  );
 
   if(!deleteUser){
     throw new AppError(httpStatus.BAD_REQUEST,'Faild to delete user')
@@ -86,11 +105,40 @@ const deleteStudentFromDB = async (id:string) =>{
 }
 
 // Update Student Into DB
-const updateStudentIntoDB = async (id:string,updateData:IStudent ) => {
+const updateStudentIntoDB = async (id:string,updateData:Partial<IStudent> ) => {
+
   if(!(await Student.isStudentExists(id))){
     throw new Error('Staudent Not Found!!');
   }
-  const result = await Student.updateOne({id},{...updateData});
+
+  const { name, guardian, localGurdian, ...remaingStuentData } = updateData;
+
+  // 
+
+  const modifiedUpdateData :Record<string,unknown> = {
+    ...remaingStuentData
+  }
+
+  if(name && Object.keys(name).length){
+    for(const [key,value] of Object.entries(name)){
+      modifiedUpdateData[`name.${key}`] = value;
+    }
+  }
+
+  if(guardian && Object.keys(guardian).length){
+    for(const[key,value] of Object.entries(guardian)){
+      modifiedUpdateData[`guardian.${key}`] = value;
+    }
+  }
+  if (localGurdian && Object.keys(localGurdian).length) {
+    for (const [key, value] of Object.entries(localGurdian)) {
+      modifiedUpdateData[`localGurdian.${key}`] = value;
+    }
+  }
+
+
+
+  const result = await Student.findOneAndUpdate({id},modifiedUpdateData,{new:true,runValidators:true});
   return result;
 }
 

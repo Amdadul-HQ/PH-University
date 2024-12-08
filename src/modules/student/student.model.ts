@@ -248,7 +248,7 @@ createStudentValidationSchema.pre('findOne', function (next) {
 createStudentValidationSchema.statics.isStudentExists = async function (
   id: string,
 ) {
-  const existStudent = await Student.findOne({ id });
+  const existStudent = await Student.findOne({ id,isDeleted:false });
   return existStudent;
 };
 
