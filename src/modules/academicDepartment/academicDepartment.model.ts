@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import { IAcadaemicDepartment } from "./academicDepartment.interface";
 import httpStatus from "http-status";
+import { AppError } from "../../app/errors/AppError";
 
 const academicDepartmentSchema = new Schema<IAcadaemicDepartment>({
   name: {
@@ -16,21 +17,7 @@ const academicDepartmentSchema = new Schema<IAcadaemicDepartment>({
     timestamps:true
 });
 
-class AppError  extends Error{
-  public statusCode :number;
 
-  constructor(ststusCode:number,message:string,stack=''){
-    super(message);
-    this.statusCode = ststusCode;
-
-    if (stack) {
-      this.stack=stack
-    }
-    else{
-      Error.captureStackTrace(this,this.constructor)
-    }
-  }
-}
 
 
 academicDepartmentSchema.pre('save',async function (next) {
