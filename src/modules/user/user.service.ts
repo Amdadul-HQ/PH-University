@@ -55,8 +55,10 @@ const createStudentInToDB = async (password:string,studentData: IStudent) => {
     return newStudent;
 
     }catch (err){
-        await session.abortTransaction();
-        await session.endSession()
+        if(err){
+            await session.abortTransaction();
+            await session.endSession()
+        }
     }
 
    
