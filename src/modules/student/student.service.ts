@@ -1,5 +1,9 @@
+import mongoose from 'mongoose';
 import { IStudent } from './student.interface';
 import { Student } from './student.model';
+import { AppError } from '../../app/errors/AppError';
+import httpStatus from 'http-status';
+import { User } from '../user/user.model';
 
 // Student register
 // const createStudentInToDB = async (studentData: IStudent) => {
@@ -41,11 +45,44 @@ const getSingleStudentsFromDB = async (studentId: string) => {
 
 // Delete Student From db
 const deleteStudentFromDB = async (id:string) =>{
-  if (!(await Student.isStudentExists(id))) {
-    throw new Error('Staudent Not Found!!');
+  // if (!(await Student.isStudentExists(id))) {
+  //   throw new Error('Staudent Not Found!!');
+  // }
+
+
+  const session = await mongoose.startSession();
+  try{
+  session.startTransaction();
+  
+  
+
+
+  const deletedStudent = await Student.findByIdAndUpdate({id},{isDeleted:true},{new:true,session});
+
+  if(!deletedStudent){
+    throw new AppError(httpStatus.BAD_REQUEST,'Failed to delete Stuedent')
   }
-  const result = await Student.updateOne({id},{isDeleted:true});
-  return result
+
+  const deleteUser = await User.findByIdAndUpdate({id},{isDeleted:true},{new:true,session})
+
+  if(!deleteUser){
+    throw new AppError(httpStatus.BAD_REQUEST,'Faild to delete user')
+  }
+
+  await session.commitTransaction();
+  await session.endSession()
+
+  return deletedStudent
+  }
+  catch(error){
+    if(error){
+      await session.abortTransaction();
+      await session.endSession();
+    }
+  }
+
+
+
 }
 
 // Update Student Into DB

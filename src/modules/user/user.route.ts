@@ -11,4 +11,6 @@ UserRoute.post(
   UserController.createStudent,
 );
 
+UserRoute.get('/',UserController.getAllUser)
+
 export const UserRoutes = UserRoute;

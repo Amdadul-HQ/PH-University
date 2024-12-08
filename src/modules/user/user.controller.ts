@@ -32,7 +32,18 @@ const createStudent = catchAsync(async (req, res) => {
     })
 })
 
+const getAllUser = catchAsync(async(req,res)=>{
+  const result = await UserService.getAllUserFromDB();
+  sendResponse(res,{
+    success:true,
+    statusCode:httpStatus.OK,
+    message:"All Users",
+    data:result
+  })
+})
+
 
 export const UserController = {
-    createStudent
+    createStudent,
+    getAllUser
 }

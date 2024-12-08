@@ -64,6 +64,13 @@ const createStudentInToDB = async (password:string,studentData: IStudent) => {
    
 };
 
+
+const getAllUserFromDB = async()=>{
+    const result = await User.find();
+    return result
+}
+
 export const UserService = {
-    createStudentInToDB
+    createStudentInToDB,
+    getAllUserFromDB
 }
