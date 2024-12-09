@@ -27,8 +27,21 @@ import { User } from '../user/user.model';
 // };
 
 // Students gell
-const getAllStudentsFromDB = async () => {
-  const result = await Student.find().populate('admissionSemester').populate({
+const getAllStudentsFromDB = async (query:Record<string,unknown>) => {
+
+  let searchTearm = ''
+  if(query?.searchTearm){
+    searchTearm = query?.searchTearm as string;
+  }
+
+
+  const result = await Student.find({
+    $or:['email','name.firstName','presentAddress'].map((field)=>({
+      [field]:{$regex: searchTearm,$options:'i'}
+    }))
+  })
+    .populate('admissionSemester')
+    .populate({
     path: 'academicDepartment',
     populate:{
       path:'academicFaculty'

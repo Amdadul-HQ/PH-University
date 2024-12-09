@@ -21,6 +21,13 @@ app.get('/', getAController);
 app.use(globalErrorHander);
 
 
+const test = async (req:Request,res:Response)=>{
+
+
+  Promise.reject();
+}
+
+app.get('/',test)
 
 // Not Found
 app.use(notFound)
