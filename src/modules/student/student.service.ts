@@ -106,7 +106,14 @@ const getAllStudentsFromDB = async (query:Record<string,unknown>) => {
 
   // return fieldsQuery;
 
-  const studentQuery = new QueryBuilder(Student.find(),query);
+  const studentQuery = new QueryBuilder(Student.find()
+  .populate('admissionSemester')
+    .populate({
+      path: 'academicDepartment',
+      populate: {
+        path: 'academicFaculty',
+      },
+    }),query)
 
   studentQuery.search(studentSearchAbleFields).filter().sort().paginate().fields();
   const result = await studentQuery.modelQuery;
