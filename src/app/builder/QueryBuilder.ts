@@ -66,5 +66,7 @@ fields(){
     return this;
 }
 
-
 }
+
+
+export default QueryBuilder;
