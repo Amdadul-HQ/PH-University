@@ -10,6 +10,7 @@ const getAllStudent = catchAsync(async (req, res) => {
   
   const query = req.query
 
+
   const result = await StudentServices.getAllStudentsFromDB(query);
 
   // send response

@@ -117,6 +117,7 @@ const createStudentValidationSchema = new Schema<IStudent, IStudentModel>(
       type: String,
       required: [true, 'Student Email Is Required'],
       trim: true,
+      unique:true
     },
     contactNo: {
       type: String,
@@ -195,7 +196,8 @@ const createStudentValidationSchema = new Schema<IStudent, IStudentModel>(
       default: false,
     },
   },
-  {
+  { 
+    timestamps:true,
     toJSON: {
       virtuals: true,
     },
@@ -205,7 +207,7 @@ const createStudentValidationSchema = new Schema<IStudent, IStudentModel>(
 // virtual
 
 createStudentValidationSchema.virtual('fullName').get(function () {
-  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+  return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`;
 });
 
 // pre save middleware/hook : will work on create()
