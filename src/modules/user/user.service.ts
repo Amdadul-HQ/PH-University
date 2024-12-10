@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose from "mongoose";
 import config from "../../app/config";
 import { IAcademicSemester } from "../academicSemester/academicSemester.interface";
@@ -6,12 +7,14 @@ import { IStudent } from "../student/student.interface";
 import { Student } from "../student/student.model";
 import { IUser } from "./user.interface";
 import { User } from "./user.model";
-import { generateFacultyId, generateStudentId } from "./user.utils";
+import { generateAdminId, generateFacultyId, generateStudentId } from "./user.utils";
 import { AppError } from "../../app/errors/AppError";
 import httpStatus from "http-status";
 import { IFaculty } from "../faculty/faculty.interface";
 import { AcademicDepartment } from "../academicDepartment/academicDepartment.model";
 import { Faculty } from "../faculty/faculty.model";
+import { IAdmin } from "../admin/admin.interface";
+import { Admin } from "../admin/admin.model";
 
 const createStudentInToDB = async (password:string,studentData: IStudent) => {
 
@@ -57,7 +60,7 @@ const createStudentInToDB = async (password:string,studentData: IStudent) => {
 
     return newStudent;
 
-    }catch (err){
+    }catch (err :any){
         if(err){
             await session.abortTransaction();
             await session.endSession()
@@ -136,8 +139,57 @@ const getAllUserFromDB = async()=>{
     return result
 }
 
+
+const createAdminInToDB = async(password:string,payload:IAdmin)=>{
+  // create a user object
+  const userData: Partial<IUser> = {};
+
+  //if password is not given , use deafult password
+  userData.password = password || (config.default_pass as string);
+
+  //set student role
+  userData.role = 'admin';
+
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+    //set  generated id
+    userData.id = await generateAdminId();
+
+    // create a user (transaction-1)
+    const newUser = await User.create([userData], { session });
+
+    //create a admin
+    if (!newUser.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+    }
+    // set id , _id as user
+    payload.id = newUser[0].id;
+    payload.user = newUser[0]._id; //reference _id
+
+    // create a admin (transaction-2)
+    const newAdmin = await Admin.create([payload], { session });
+
+    if (!newAdmin.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return newAdmin;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
+  }
+}
+
 export const UserService = {
     createStudentInToDB,
     getAllUserFromDB,
-    createFacultyInToDB
+    createFacultyInToDB,
+    createAdminInToDB
 }
