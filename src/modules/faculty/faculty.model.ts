@@ -98,6 +98,22 @@ const facultySchema = new Schema<IFaculty, FacultyModel>(
   },
 );
 
+// filter out deleted documents
+facultySchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+facultySchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+facultySchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
+
 
 facultySchema.virtual('fullName').get(function(){
     return(

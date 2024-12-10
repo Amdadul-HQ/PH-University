@@ -63,7 +63,7 @@ const deleteFacultyFromDB = async(id:string) =>{
     const userId = deletedFaculty.user;
     const deleteUser = await User.findByIdAndUpdate(userId,{isDeleted:true},{new:true,session});
 
-     if (!deletedUser) {
+     if (!deleteUser) {
        throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete user');
      }
 
