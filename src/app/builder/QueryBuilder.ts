@@ -40,7 +40,7 @@ class QueryBuilder<T> {
 // Sorting
   sort(){
     const sort =
-      (this.query.sort as string).split(',').join(' ') || '-createdAt';
+      (this?.query?.sort as string)?.split(',').join(' ') || '-createdAt';
 
     this.modelQuery = this.modelQuery.sort(sort);
 
@@ -60,7 +60,7 @@ paginate(){
 }
 
 fields(){
-    const fields = (this.query.fields as string).split(',').join(' ') || '-__v';
+    const fields = (this.query.fields as string)?.split(',').join(' ') || '-__v';
 
     this.modelQuery = this.modelQuery.select(fields);
 

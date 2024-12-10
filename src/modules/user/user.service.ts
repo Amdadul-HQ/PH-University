@@ -72,7 +72,7 @@ const createStudentInToDB = async (password:string,studentData: IStudent) => {
 // Create Faculty - 
 const createFacultyInToDB = async (password:string,payload:IFaculty) =>{
 
-    // create a user Object\
+    // create a user Object
 
     const userData:Partial<IUser> = {};
 
