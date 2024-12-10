@@ -14,7 +14,10 @@ UserRoute.post(
 );
 
 // Create Faculty 
-UserRoute.post('/create-faculty',validateRequest(facultyValidation.createFacultyValidationSchema),UserController.createFaculty)
+UserRoute.post('/create-faculty',validateRequest(facultyValidation.createFacultyValidationSchema),UserController.createFaculty);
+
+// Create Admin
+UserRoute.post('/create-admin',)
 
 UserRoute.get('/',UserController.getAllUser)
 
