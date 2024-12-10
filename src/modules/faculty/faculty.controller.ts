@@ -42,6 +42,12 @@ const updateFaculty = catchAsync(async(req,res)=>{
 })
 
 
+const deleteFaculty = catchAsync(async(req,res)=>{
+    const {id} = req.params;
+    const result = await FacultyService.
+})
+
+
 export const FacultyController = {
     getAllFaculty,
     getSingleFaculty,
