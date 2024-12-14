@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose from 'mongoose';
 import { IStudent } from './student.interface';
 import { Student } from './student.model';
@@ -123,8 +124,8 @@ const getAllStudentsFromDB = async (query:Record<string,unknown>) => {
 };
 
 // Get singel Student
-const getSingleStudentsFromDB = async (studentId: string) => {
-  const result = await Student.findOne({ id: studentId })
+const getSingleStudentsFromDB = async (id: string) => {
+  const result = await Student.findById(id)
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
@@ -146,7 +147,6 @@ const deleteStudentFromDB = async (id:string) =>{
     
     const isStudentExists = await Student.isStudentExists(id)
 
-    console.log(isStudentExists,id,'service');
 
     if (isStudentExists == null) {
       throw new AppError(httpStatus.NOT_FOUND,'Staudent Not Found!!');
@@ -179,7 +179,7 @@ const deleteStudentFromDB = async (id:string) =>{
 
   return deletedStudent
   }
-  catch(error){
+  catch(error:any){
     if(error){
       await session.abortTransaction();
       await session.endSession();
@@ -225,14 +225,11 @@ const updateStudentIntoDB = async (id:string,updateData:Partial<IStudent> ) => {
     }
   }
 
-
-
-  const result = await Student.findOneAndUpdate({id},modifiedUpdateData,{new:true,runValidators:true});
+  const result = await Student.findByIdAndUpdate(id,modifiedUpdateData,{new:true,runValidators:true})
   return result;
 }
 
 export const StudentServices = {
-  // createStudentInToDB,
   getAllStudentsFromDB,
   getSingleStudentsFromDB,
   deleteStudentFromDB,
