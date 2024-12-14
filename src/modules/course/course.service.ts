@@ -30,7 +30,13 @@ const getSingleCourseFromDB = async (id:string) =>{
 }
 
 const updateCourseInToDB = async (id:string,payload:Partial<ICourse>) =>{
+    const { preRequisiteCourse ,...courseRemainingData} = payload;
 
+    // step -1 basic course info 
+
+    const updateBasicCourseInFo = await Course.findByIdAndUpdate(id,courseRemainingData,{new:true,runValidators:true});
+
+    return updateBasicCourseInFo;
 }
 
 const deleteCourseFromDB = async (id:string) =>{

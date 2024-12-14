@@ -13,6 +13,8 @@ CourseRouter.get('/',CourseController.getAllCourses)
 
 CourseRouter.get('/:id',CourseController.getSingleCourse)
 
+CourseRouter.patch('/:id', validateRequest(CourseValidation.updateCourseValidationSchema),CourseController.updateCourses);
+
 CourseRouter.delete('/:id',CourseController.deleteCourse);
 
 export const CourseRouters = CourseRouter;

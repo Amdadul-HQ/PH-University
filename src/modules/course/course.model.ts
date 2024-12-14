@@ -30,6 +30,11 @@ const courseSchema = new Schema<ICourse>({
         trim:true,
         required:true
     },
+    credits:{
+        type:Number,
+        trim:true,
+        required:true,
+    },
     isDeleted:{
         type:Boolean,
         default:false
