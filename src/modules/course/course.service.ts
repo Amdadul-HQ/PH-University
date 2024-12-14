@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import QueryBuilder from "../../app/builder/QueryBuilder";
 import { CourseSearchableFields } from "./course.constant";
-import { ICourse } from "./course.interface";
-import { Course } from "./course.model"
+import { ICourse, ICourseFaculty } from "./course.interface";
+import { Course, CourseFaculty } from "./course.model"
 import { AppError } from "../../app/errors/AppError";
 import httpStatus from "http-status";
 
@@ -91,6 +91,7 @@ const updateCourseInToDB = async (id:string,payload:Partial<ICourse>) =>{
 
       return result;
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     catch(err:any){
         session.abortTransaction();
         session.endSession();
@@ -107,6 +108,19 @@ const deleteCourseFromDB = async (id:string) =>{
 }
 
 
+const assignCourseToFacultyInToDB = async(id:string,payload:Partial<ICourseFaculty>) =>{
+
+    const result = await CourseFaculty.findByIdAndUpdate(id,{
+        $addToSet:{faculties:{$each:payload}}
+    },
+    {
+        upsert:true,
+        new:true
+    }
+);
+return result;
+}
+
 
 
 export const CourseServices = {
@@ -114,5 +128,6 @@ export const CourseServices = {
     getAllCoursesFromDB,
     getSingleCourseFromDB,
     updateCourseInToDB,
-    deleteCourseFromDB
+    deleteCourseFromDB,
+    assignCourseToFacultyInToDB
 }

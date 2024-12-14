@@ -15,3 +15,9 @@ export interface ICourse {
     isDeleted:boolean,
     preRequisiteCourse:[IPreRequisiteCourses];
 }
+
+
+export interface ICourseFaculty {
+    course:Types.ObjectId,
+    faculties:[Types.ObjectId]
+}
