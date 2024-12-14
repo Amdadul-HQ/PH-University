@@ -164,8 +164,8 @@ const deleteStudentFromDB = async (id:string) =>{
     throw new AppError(httpStatus.BAD_REQUEST,'Failed to delete Stuedent')
   }
 
-  const deleteUser = await User.findOneAndUpdate(
-    { id },
+  const deleteUser = await User.findByIdAndUpdate(
+    id,
     { isDeleted: true },
     { new: true, session },
   );
