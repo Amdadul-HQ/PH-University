@@ -12,5 +12,6 @@ export interface ICourse {
     prefix:string,
     code: number,
     credits:number,
+    isDeleted:boolean,
     preRequisiteCourse:[];
 }

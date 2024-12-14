@@ -30,7 +30,23 @@ const courseSchema = new Schema<ICourse>({
         trim:true,
         required:true
     },
+    isDeleted:{
+        type:Boolean,
+        default:false
+    },
     preRequisiteCourse:[preRequisiteCourseSchema],
+});
+
+
+
+courseSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+courseSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
 });
 
 export const Course = model<ICourse>('Course',courseSchema);
