@@ -1,4 +1,4 @@
-import { Schema, z } from "zod";
+import { z } from "zod";
 
 const PreRquisiteCourseValidationSchema = z.object({
     course:z.string(),
@@ -12,7 +12,10 @@ const createCourseValidationSchema = z.object({
         prefix:z.string(),
         code:z.number(),
         credits: z.number(),
-        preRequisiteCoureses:z.array(PreRquisiteCourseValidationSchema),
+        preRequisiteCoureses:z.array(PreRquisiteCourseValidationSchema).optional(),
     })
 })
-export 
+export const  CourseValidation = {
+    createCourseValidationSchema,
+    PreRquisiteCourseValidationSchema
+}
