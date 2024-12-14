@@ -95,7 +95,7 @@ const updateCourseInToDB = async (id:string,payload:Partial<ICourse>) =>{
     catch(err:any){
         session.abortTransaction();
         session.endSession();
-        throw new AppError(httpStatus.NOT_MODIFIED,'Faild to Update Course')
+        throw new Error( err || 'Faild to update Course')
     }
 
    
