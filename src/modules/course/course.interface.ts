@@ -13,5 +13,5 @@ export interface ICourse {
     code: number,
     credits:number,
     isDeleted:boolean,
-    preRequisiteCourse:[];
+    preRequisiteCourse:[IPreRequisiteCourses];
 }
