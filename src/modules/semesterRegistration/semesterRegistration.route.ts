@@ -16,6 +16,8 @@ SemesterRegistrationRouter.post(
 
 SemesterRegistrationRouter.get('/',SemesterRegistrationController.getAllSemesterRegistration);
 
-SemesterRegistrationRouter.get('/:id',SemesterRegistrationController.getSingleSemesterRegistration)
+SemesterRegistrationRouter.get('/:id',SemesterRegistrationController.getSingleSemesterRegistration);
+
+SemesterRegistrationRouter.patch('/:id',validateRequest(SemesterRegistrationValidations.updateSemesterRegistrationValidationSchema),SemesterRegistrationController.updateSemesterRegistration)
 
 export const SemesterRegistrationRoutes = SemesterRegistrationRouter;
