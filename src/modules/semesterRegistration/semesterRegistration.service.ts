@@ -64,7 +64,38 @@ const getSingleSemesterRegistrationFromDB = async(id:string)=>{
 }
 
 const updateSemesterRegistrationInToDB = async(id:string,payload:Partial<ISemesterRegistration>) =>{
+  
+const isSemesterRegistrationExists = await SemesterRegistration.findById(id);
+const requestedStatus = payload.status
+  
+  if(!isSemesterRegistrationExists){
+    throw new AppError(httpStatus.NOT_FOUND,'This Semester isn not found')
+  }
 
+  const currentSemesterStatus = isSemesterRegistrationExists.status;
+
+
+  //if the requested semester registration is ended, we will not update
+  if(currentSemesterStatus === "ENDED"){
+    throw new AppError(httpStatus.BAD_REQUEST,'This Semester is alrealy ENDED')
+  };
+
+  if (currentSemesterStatus === 'UPCOMING' && requestedStatus === 'ENDED') {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'You can not directly update to UPCOMING To ENDED',
+    );
+  }
+
+  if (currentSemesterStatus === 'ONGOING' && requestedStatus === 'UPCOMING') {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'You can not directly update to ONGOING To UPCOMING',
+    );
+  }
+
+  const result = await SemesterRegistration.findByIdAndUpdate(id,payload,{new:true,runValidators:true})
+  return result;
 }
 
 
