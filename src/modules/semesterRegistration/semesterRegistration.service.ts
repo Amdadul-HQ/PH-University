@@ -4,6 +4,7 @@ import { AcademicSemester } from "../academicSemester/academicSemester.model"
 import { ISemesterRegistration } from "./semesterRegistration.interface"
 import { SemesterRegistration } from "./semesterRegistration.model";
 import QueryBuilder from "../../app/builder/QueryBuilder";
+import { registrationStatus } from "./semesterRegistration.constant";
 
 const createSemesterRegistrationInToDB = async(payload:ISemesterRegistration) =>{
     
@@ -14,7 +15,7 @@ const createSemesterRegistrationInToDB = async(payload:ISemesterRegistration) =>
     // check if there any registered semester that is already 'UPCOMING' | 'ONGOING
 
     const isThereAnyUpcommingOrOngoingSemester = await SemesterRegistration.findOne({
-      $or:[{status:'UPCOMING'},{status:'ONGOING'}]
+      $or:[{status:registrationStatus.UPCOMING},{status:registrationStatus.ONGOING}]
     });
 
     if(isThereAnyUpcommingOrOngoingSemester){
@@ -76,18 +77,18 @@ const requestedStatus = payload.status
 
 
   //if the requested semester registration is ended, we will not update
-  if(currentSemesterStatus === "ENDED"){
+  if(currentSemesterStatus === registrationStatus.ENDED){
     throw new AppError(httpStatus.BAD_REQUEST,'This Semester is alrealy ENDED')
   };
 
-  if (currentSemesterStatus === 'UPCOMING' && requestedStatus === 'ENDED') {
+  if (currentSemesterStatus === registrationStatus.UPCOMING && requestedStatus === registrationStatus.ENDED) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       'You can not directly update to UPCOMING To ENDED',
     );
   }
 
-  if (currentSemesterStatus === 'ONGOING' && requestedStatus === 'UPCOMING') {
+  if (currentSemesterStatus === registrationStatus.ONGOING && requestedStatus === registrationStatus.UPCOMING) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       'You can not directly update to ONGOING To UPCOMING',
