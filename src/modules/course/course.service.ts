@@ -122,12 +122,31 @@ return result;
 }
 
 
+const removeFacultyFromCourseFromDB = async (
+  id: string,
+  payload: Partial<ICourseFaculty>,
+) => {
+  const result = await CourseFaculty.findByIdAndUpdate(
+    id,
+    {
+      $pull: { faculties:{$in:payload} },
+    },
+    {
+      upsert: true,
+      new: true,
+    },
+  );
+  return result;
+};
+
+
 
 export const CourseServices = {
-    createCourseInToDB,
-    getAllCoursesFromDB,
-    getSingleCourseFromDB,
-    updateCourseInToDB,
-    deleteCourseFromDB,
-    assignCourseToFacultyInToDB
-}
+  createCourseInToDB,
+  getAllCoursesFromDB,
+  getSingleCourseFromDB,
+  updateCourseInToDB,
+  deleteCourseFromDB,
+  assignCourseToFacultyInToDB,
+  removeFacultyFromCourseFromDB,
+};

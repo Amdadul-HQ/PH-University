@@ -17,6 +17,13 @@ CourseRouter.patch('/:id', validateRequest(CourseValidation.updateCourseValidati
 
 CourseRouter.delete('/:id',CourseController.deleteCourse);
 
-CourseRouter.put('/:id/assign-faculties',validateRequest(CourseValidation.assignFacultyWithCourseValidationSchema),CourseController.assignCourseToFaculty)
+CourseRouter.put('/:id/assign-faculties',validateRequest(CourseValidation.facultyWithCourseValidationSchema),CourseController.assignCourseToFaculty)
+
+
+CourseRouter.delete(
+  '/:id/assign-faculties',
+  validateRequest(CourseValidation.facultyWithCourseValidationSchema),
+  CourseController.removeFacultyFromCourse,
+);
 
 export const CourseRouters = CourseRouter;
