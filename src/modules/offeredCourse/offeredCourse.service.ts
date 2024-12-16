@@ -82,8 +82,6 @@ const createOfferedCourseInToDB = async(payload:IOfferedCourse)=>{
         );
     }
     
-
-
     const academicSemester = isSemesterRegistrationExits.academicSemester
 
 
@@ -91,7 +89,63 @@ const createOfferedCourseInToDB = async(payload:IOfferedCourse)=>{
     return result;
 }
 
+const updateOfferedCourseIntoDB = async(id:string,payload:Pick<IOfferedCourse,'faculty'| 'startTime' | 'endTime' | 'days'>) =>{
+    const {faculty,days,startTime,endTime} = payload
+    
+
+
+
+
+
+    const isOfferedCourseExits = await OfferedCourse.findById(id);
+    if (!isOfferedCourseExits) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Offered Course is not found!!');
+    }
+
+    const isFacultyExits = await Faculty.findById(faculty);
+
+    if(!isFacultyExits){
+        throw new AppError(
+          httpStatus.NOT_FOUND,
+          'Faculty is not found!!',
+        );
+    }
+
+    const semesterRegistration = isOfferedCourseExits.semesterRegistration;
+
+    const semesterRegistrationStatus = await SemesterRegistration.findById(semesterRegistration);
+
+    if(semesterRegistrationStatus?.status !=='UPCOMING'){
+        throw new AppError(httpStatus.BAD_REQUEST,'You Can not Update ONGOING OR ENDED semester!!')
+    }
+
+    const assignedSchedules = await OfferedCourse.find({
+      semesterRegistration,
+      faculty,
+      days: { $in: days },
+    }).select('days startTime endTime');
+
+    const newSchedule = {
+      days,
+      startTime,
+      endTime,
+    };
+
+    if (hasTimeConflict(assignedSchedules, newSchedule)) {
+      throw new AppError(
+        httpStatus.CONFLICT,
+        'This Faculty is not available at that time !',
+      );
+    }
+
+    const result = await OfferedCourse.findByIdAndUpdate(id,payload,{
+        new:true
+    });
+    return result;
+
+}
 
 export const OfferedCourseServices = {
-    createOfferedCourseInToDB
+    createOfferedCourseInToDB,
+    updateOfferedCourseIntoDB
 }
