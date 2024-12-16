@@ -14,10 +14,10 @@ AcademicFacultyRouter.post('/create-academic-faculty',
 AcademicFacultyRouter.get('/',AcademicFacultyControllers.getAllAcademicFaculty);
 
 // get Academic Faculty single
-AcademicFacultyRouter.get('/:academicFacultyId',AcademicFacultyControllers.getSingleAcademicFaculty);
+AcademicFacultyRouter.get('/:id',AcademicFacultyControllers.getSingleAcademicFaculty);
 
 // update Academic Faculty 
-AcademicFacultyRouter.patch('/:academicFacultyId',
+AcademicFacultyRouter.patch('/:id',
     validateRequest(AcademicFacultyValidation.updateAcademicFacultyValidationSchema),
     AcademicFacultyControllers.updateAcademicFacaulty);
 
