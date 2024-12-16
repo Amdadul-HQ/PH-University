@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
-import { IOfferedCourse } from './offeredCourse.route';
 import { Days } from './offeredCourse.constant';
+import { IOfferedCourse } from './offeredCourse.interface';
 
 const offeredCourseSchema = new mongoose.Schema<IOfferedCourse>(
   {
