@@ -7,6 +7,7 @@ import { AcademicFaculty } from "../academicFaculty/academicFaculty.model";
 import { AcademicDepartment } from "../academicDepartment/academicDepartment.model";
 import { Course } from "../course/course.model";
 import { Faculty } from "../faculty/faculty.model";
+import { hasTimeConflict } from "./offeredCourse.utils";
 
 const createOfferedCourseInToDB = async(payload:IOfferedCourse)=>{
     const {semesterRegistration,academicFaculty,academicDepartment,course,faculty,section,days,startTime,endTime} = payload;
@@ -74,15 +75,22 @@ const createOfferedCourseInToDB = async(payload:IOfferedCourse)=>{
         endTime
     };
 
-    assignedSchedules.forEach((schedule)=>{
-        const existingStartTime = new Date(`1970-01-01T${schedule.startTime}`);
-        const existingEndTime = new Date(`1970-01-01T${schedule.endTime}`);
-        const newStartingTime = new Date(`1970-01-01T${newSchedule.startTime}`);
-        const newEndTime = new Date(`1970-01-01T${newSchedule.endTime}`);
-        if(newStartingTime<existingEndTime && newEndTime > existingStartTime){
-            throw new AppError(httpStatus.CONFLICT,'This Faculty is not available at that time !')
-        }
-    })
+    // assignedSchedules.forEach((schedule)=>{
+    //     const existingStartTime = new Date(`1970-01-01T${schedule.startTime}`);
+    //     const existingEndTime = new Date(`1970-01-01T${schedule.endTime}`);
+    //     const newStartingTime = new Date(`1970-01-01T${newSchedule.startTime}`);
+    //     const newEndTime = new Date(`1970-01-01T${newSchedule.endTime}`);
+    //     if(newStartingTime<existingEndTime && newEndTime > existingStartTime){
+    //         throw new AppError(httpStatus.CONFLICT,'This Faculty is not available at that time !')
+    //     }
+    // })
+
+    if(hasTimeConflict(assignedSchedules,newSchedule)){
+        throw new AppError(
+          httpStatus.CONFLICT,
+          'This Faculty is not available at that time !',
+        );
+    }
     
 
 
