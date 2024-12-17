@@ -1,9 +1,10 @@
-import jwt from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken"
 import httpStatus from "http-status";
 import { AppError } from "../../app/errors/AppError";
 import { User } from "../user/user.model";
 import { ILoginUser } from "./auth.interface";
 import config from "../../app/config";
+import bcrypt from "bcrypt"
 
 const loginUserInToDB = async(payload:ILoginUser)=>{
 
@@ -46,4 +47,47 @@ const loginUserInToDB = async(payload:ILoginUser)=>{
     }
 }
 
-export const AuthServices ={loginUserInToDB}
+
+const changePasswordInToDB = async(user:JwtPayload,payload:{oldPassword:string,newPassword:string}) =>{
+    
+    const isUserExists = await User.isUserExistsByCustomId(user.userId);
+
+    if (!isUserExists) {
+      throw new AppError(httpStatus.NOT_FOUND, 'This user is not found!');
+    }
+    const isDeleted = isUserExists?.isDeleted;
+    if (isDeleted) {
+      throw new AppError(httpStatus.FORBIDDEN, 'This User is Already Deleted!');
+    }
+    const userStatus = isUserExists.status;
+
+    if (userStatus === 'blocked') {
+      throw new AppError(httpStatus.FORBIDDEN, 'This user is Blocked');
+    }
+
+    if (
+      !(await User.isPasswordMatched(payload.oldPassword, isUserExists.password))
+    ) {
+      throw new AppError(httpStatus.FORBIDDEN, 'Password not matched');
+    }
+
+
+    // hash new password
+    const newHashedPassword = await bcrypt.hash(payload.newPassword,Number(config.bycrypt_salt_rounds))
+    
+    
+    
+    await User.findOneAndUpdate({
+        id:user.userId,
+        role:user.role
+    },{
+        password:newHashedPassword,
+        needsPasswordChange:false,
+        passwordChangeAt:new Date(),
+    })
+    return null
+}
+
+export const AuthServices ={
+    loginUserInToDB,changePasswordInToDB
+}
