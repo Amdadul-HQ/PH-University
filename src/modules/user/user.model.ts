@@ -14,10 +14,12 @@ const userSchema = new Schema<IUser,IUserModel>(
       type: String,
       required: [true, 'Password is Required'],
       maxlength: [20, 'Password can not be more than 20'],
+      select:0
     },
     needsPasswordChange: {
       type: Boolean,
       default: true,
+      select:0
     },
     role: {
       type: String,
@@ -73,4 +75,4 @@ userSchema.statics.isPasswordMatched = async function (plainTextPassword,hashedP
 }
 
 
-export const User = model<IUser,IUserModel>('user',userSchema)
+export const User = model<IUser,IUserModel>('User',userSchema)
