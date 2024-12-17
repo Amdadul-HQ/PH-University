@@ -1,8 +1,9 @@
-import bcrypt from 'bcrypt'
+import jwt from "jsonwebtoken"
 import httpStatus from "http-status";
 import { AppError } from "../../app/errors/AppError";
 import { User } from "../user/user.model";
 import { ILoginUser } from "./auth.interface";
+import config from "../../app/config";
 
 const loginUserInToDB = async(payload:ILoginUser)=>{
 
@@ -26,9 +27,23 @@ const loginUserInToDB = async(payload:ILoginUser)=>{
         throw new AppError(httpStatus.FORBIDDEN,'Password not matched')
     }
 
+    const jwtPayload = {
+        userId:isUserExists.id,
+        role:isUserExists.role
+    }
+
     //create token and send to client
-    
-    return{}
+    const accessToken = jwt.sign(jwtPayload,
+    config.jwt_access_secret as string,
+    {expiresIn:'10d'}
+    );
+
+
+
+    return{
+        accessToken,
+        needsPasswordChange:isUserExists?.needsPasswordChange
+    }
 }
 
 export const AuthServices ={loginUserInToDB}
