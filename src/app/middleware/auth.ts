@@ -27,10 +27,8 @@ const auth = () => {
         }
        
         req.user = decoded as JwtPayload;
+        next()
     })
-
-
-    next()
   })
 };
 
