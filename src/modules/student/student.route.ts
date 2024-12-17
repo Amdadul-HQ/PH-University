@@ -1,5 +1,7 @@
 import express from 'express';
 import { StudentControllers } from './student.controller';
+import auth from '../../app/middleware/auth';
+import { USER_ROLE } from '../user/user.constant';
 
 const StudentRouter = express.Router();
 
@@ -7,7 +9,7 @@ const StudentRouter = express.Router();
 // StudentRouter.post('/create-student', StudentControllers.createStudent);
 
 // Get All Students
-StudentRouter.get('/get-all-students', StudentControllers.getAllStudent);
+StudentRouter.get('/get-all-students',auth(USER_ROLE.admin), StudentControllers.getAllStudent);
 
 // Get Single Students
 StudentRouter.get('/:id', StudentControllers.getSingelStudent);
