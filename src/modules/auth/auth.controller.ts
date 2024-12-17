@@ -3,6 +3,7 @@ import { catchAsync } from "../../app/utils/catchAsync";
 import sendResponse from "../../app/utils/sendResponse";
 import { AuthServices } from "./auth.service";
 import config from "../../app/config";
+import { JwtPayload } from "jsonwebtoken";
 
 const loginuser = catchAsync(async(req,res)=>{
     const result = await AuthServices.loginUserInToDB(req.body);
@@ -35,7 +36,24 @@ const changePassword = catchAsync(async (req, res) => {
   });
 });
 
+const refreshToken = catchAsync(async (req, res) => {
+
+  const{refreshToken} = req.cookies;
+
+  const result = await AuthServices.refreshTokenFromDB(refreshToken);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'New Access token get',
+    data: result,
+  });
+});
+
+
+
 export const AuthController = {
   loginuser,
-  changePassword
+  changePassword,
+  refreshToken
 };

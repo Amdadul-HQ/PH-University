@@ -23,13 +23,13 @@ app.get('/', getAController);
 app.use(globalErrorHander);
 
 
-const test = async (req:Request,res:Response)=>{
+// const test = async (req:Request,res:Response)=>{
 
 
-  Promise.reject();
-}
+//   Promise.reject();
+// }
 
-app.get('/',test)
+// app.get('/',test)
 
 // Not Found
 app.use(notFound)

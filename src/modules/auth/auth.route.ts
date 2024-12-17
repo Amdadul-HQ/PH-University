@@ -18,4 +18,8 @@ AuthRoute.post(
   AuthController.changePassword,
 );
 
+AuthRoute.post('/refresh-token',validateRequest(AuthValidation.refreshTokenValidation),
+AuthController.refreshToken
+)
+
 export const AuthRoutes = AuthRoute
