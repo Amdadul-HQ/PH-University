@@ -1,10 +1,11 @@
-import jwt, { JwtPayload } from "jsonwebtoken"
+import { JwtPayload } from "jsonwebtoken"
 import httpStatus from "http-status";
 import { AppError } from "../../app/errors/AppError";
 import { User } from "../user/user.model";
 import { ILoginUser } from "./auth.interface";
 import config from "../../app/config";
 import bcrypt from "bcrypt"
+import { createToken } from "./auth.utils";
 
 const loginUserInToDB = async(payload:ILoginUser)=>{
 
@@ -34,22 +35,22 @@ const loginUserInToDB = async(payload:ILoginUser)=>{
     }
 
     //create token and send to client
-    const accessToken = jwt.sign(jwtPayload,
-    config.jwt_access_secret as string,
-    {expiresIn:'10d'}
-    );
+    const accessToken = createToken(jwtPayload,config.jwt_access_secret as string,config.jwt_access_expire as string)
+
+    const refreshToken = createToken(jwtPayload,config.jwt_refresh_secret as string,config.jwt_refresh_expire as string)
 
 
 
     return{
         accessToken,
+        refreshToken,
         needsPasswordChange:isUserExists?.needsPasswordChange
     }
 }
 
 
 const changePasswordInToDB = async(user:JwtPayload,payload:{oldPassword:string,newPassword:string}) =>{
-    
+
     const isUserExists = await User.isUserExistsByCustomId(user.userId);
 
     if (!isUserExists) {
