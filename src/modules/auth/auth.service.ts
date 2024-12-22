@@ -160,13 +160,13 @@ const forgetPasswordInToDB = async(id:string)=>{
    };
 
   //create token and send to client
-  const accessToken = createToken(
+  const resetToken = createToken(
     jwtPayload,
     config.jwt_access_secret as string,
     '10m',
   );
 
-  const resetUILink = `http://localhost:5000?id=${isUserExists.id}&token=${accessToken}`;
+  const resetUILink = `http://localhost:5000?id=${isUserExists.id}&token=${resetToken}`;
   return resetUILink;
 }
 
