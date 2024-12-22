@@ -7,6 +7,7 @@ import config from "../../app/config";
 import bcrypt from "bcrypt"
 import { createToken } from "./auth.utils";
 import jwt from "jsonwebtoken"
+import { sendEmail } from "../../app/utils/sendEmail";
 
 const loginUserInToDB = async(payload:ILoginUser)=>{
 
@@ -167,7 +168,8 @@ const forgetPasswordInToDB = async(id:string)=>{
   );
 
   const resetUILink = `http://localhost:5000?id=${isUserExists.id}&token=${resetToken}`;
-  return resetUILink;
+  // return resetUILink;
+  sendEmail()
 }
 
 export const AuthServices ={
