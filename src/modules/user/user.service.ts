@@ -33,6 +33,9 @@ const createStudentInToDB = async (password:string,studentData: IStudent) => {
     );
 
     userData.role = 'student';
+
+    userData.email = studentData.email;
+
     // manulally generate id
     userData.id = await generateStudentId(admissionSemester as IAcademicSemester);
 
@@ -84,6 +87,7 @@ const createFacultyInToDB = async (password:string,payload:IFaculty) =>{
 
     // set user role 
     userData.role = 'faculty';
+    userData.email = payload.email;
 
     // fine academic department info 
     const academicDepartment = await AcademicDepartment.findById(payload.academicDepartment);
@@ -149,6 +153,7 @@ const createAdminInToDB = async(password:string,payload:IAdmin)=>{
 
   //set student role
   userData.role = 'admin';
+  userData.email = payload.email;
 
   const session = await mongoose.startSession();
 
