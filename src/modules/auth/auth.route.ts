@@ -22,4 +22,8 @@ AuthRoute.post('/refresh-token',validateRequest(AuthValidation.refreshTokenValid
 AuthController.refreshToken
 )
 
+AuthRoute.post('/forget-password',validateRequest(AuthValidation.forgetPasswordValidationSchema),
+AuthController.forgetPassword
+)
+
 export const AuthRoutes = AuthRoute

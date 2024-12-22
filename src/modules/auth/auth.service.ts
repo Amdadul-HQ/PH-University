@@ -116,8 +116,6 @@ const refreshTokenFromDB =async(token:string)=>{
             if(userStatus === "blocked"){
                 throw new AppError(httpStatus.FORBIDDEN,'This user is Blocked')
             };
-
-            console.log(isUserExists.passwordChangeAt,await User.isJWTIssuedBeforePasswordChanged(isUserExists.passwordChangeAt,iat),'120 line');
     
             if(isUserExists.passwordChangeAt && await User.isJWTIssuedBeforePasswordChanged(isUserExists.passwordChangeAt,iat as number)){
               throw new AppError(httpStatus.UNAUTHORIZED,"You are not authorized...")
@@ -138,6 +136,40 @@ const refreshTokenFromDB =async(token:string)=>{
              return {accessToken}
 }
 
+const forgetPasswordInToDB = async(id:string)=>{
+
+
+  const isUserExists = await User.isUserExistsByCustomId(id);
+
+  if (!isUserExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found!');
+  }
+  const isDeleted = isUserExists?.isDeleted;
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'This User is Already Deleted!');
+  }
+  const userStatus = isUserExists.status;
+
+  if (userStatus === 'blocked') {
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is Blocked');
+  }
+
+   const jwtPayload = {
+    userId: isUserExists.id,
+    role: isUserExists.role,
+   };
+
+  //create token and send to client
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    '10m',
+  );
+
+  const resetUILink = `http://localhost:5000?id=${isUserExists.id}token=${accessToken}`;
+  console.log(resetUILink);
+}
+
 export const AuthServices ={
-    loginUserInToDB,changePasswordInToDB,refreshTokenFromDB
+    loginUserInToDB,changePasswordInToDB,refreshTokenFromDB,forgetPasswordInToDB
 }

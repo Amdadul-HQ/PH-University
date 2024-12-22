@@ -27,7 +27,9 @@ const changePassword = catchAsync(async (req, res) => {
 
   const {...passwordDate} = req.body
 
-  const result = await AuthServices.changePasswordInToDB(req.user,passwordDate);
+  const user = req.user as JwtPayload
+
+  const result = await AuthServices.changePasswordInToDB(user,passwordDate);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -50,10 +52,22 @@ const refreshToken = catchAsync(async (req, res) => {
   });
 });
 
+const forgetPassword = catchAsync(async(req,res)=>{
+
+  const userId = req.body.id
+  const result = await AuthServices.forgetPasswordInToDB(userId);
+  sendResponse(res,{
+    statusCode:httpStatus.OK,
+    success:true,
+    message:'Reset link is generated Successfully',
+    data:result
+  })
+})
 
 
 export const AuthController = {
   loginuser,
   changePassword,
-  refreshToken
+  refreshToken,
+  forgetPassword
 };
