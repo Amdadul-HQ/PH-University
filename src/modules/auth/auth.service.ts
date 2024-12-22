@@ -166,8 +166,8 @@ const forgetPasswordInToDB = async(id:string)=>{
     '10m',
   );
 
-  const resetUILink = `http://localhost:5000?id=${isUserExists.id}token=${accessToken}`;
-  console.log(resetUILink);
+  const resetUILink = `http://localhost:5000?id=${isUserExists.id}&token=${accessToken}`;
+  return resetUILink;
 }
 
 export const AuthServices ={
