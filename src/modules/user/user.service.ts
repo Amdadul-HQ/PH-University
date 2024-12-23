@@ -15,8 +15,6 @@ import { AcademicDepartment } from "../academicDepartment/academicDepartment.mod
 import { Faculty } from "../faculty/faculty.model";
 import { IAdmin } from "../admin/admin.interface";
 import { Admin } from "../admin/admin.model";
-import { verifyToken } from "../auth/auth.utils";
-import { JwtPayload } from "jsonwebtoken";
 
 const createStudentInToDB = async (password:string,studentData: IStudent) => {
 
@@ -194,15 +192,22 @@ const createAdminInToDB = async(password:string,payload:IAdmin)=>{
   }
 }
 
-const getMeFromDB = async (token:string) =>{
-    
-    const {userId,role} = verifyToken(token,config.jwt_access_secret as string) as JwtPayload
+const getMeFromDB = async (userId:string,role:string) => {
 
-    console.log(userId,role);
-    // const result = await 
-    
-    // return result 
-}
+
+  let result;
+  if (role === 'student') {
+    result = await Student.findOne({ id: userId });
+  }
+  if (role === 'admin') {
+    result = await Admin.findOne({ id: userId });
+  }
+  if (role === 'faculty') {
+    result = await Faculty.findOne({ id: userId });
+  }
+
+  return result;
+};
 
 export const UserService = {
     createStudentInToDB,

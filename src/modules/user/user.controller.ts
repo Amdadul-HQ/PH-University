@@ -2,7 +2,7 @@ import httpStatus from "http-status";
 import { UserService } from "./user.service";
 import { catchAsync } from "../../app/utils/catchAsync";
 import sendResponse from "../../app/utils/sendResponse";
-import { AppError } from "../../app/errors/AppError";
+import { JwtPayload } from "jsonwebtoken";
 
 
 
@@ -75,21 +75,14 @@ const getAllUser = catchAsync(async(req,res)=>{
 
 const getMe = catchAsync(async(req,res)=>{
 
+  const {userId,role} = req.user as JwtPayload
 
-  const token = req.headers.authorization;
-
-  if(!token){
-    throw new AppError(httpStatus.FORBIDDEN,'Access token not found')
-  }
-
-
-
-  const result = await UserService.getMeFromDB(token)
+  const result = await UserService.getMeFromDB(userId,role)
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'All Users',
+    message: 'My Data is retrieved successfully',
     data: result,
   });
 })
