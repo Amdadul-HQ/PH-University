@@ -17,7 +17,7 @@ const createStudent = catchAsync(async (req, res) => {
   // will call service func to send this data
 
   const { password, student } = req.body;
-  const result = await UserService.createStudentInToDB(password, student);
+  const result = await UserService.createStudentInToDB(req.file,password, student);
 
   // send response
   sendResponse(res, {

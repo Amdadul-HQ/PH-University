@@ -19,8 +19,9 @@ import { AcademicDepartment } from '../academicDepartment/academicDepartment.mod
 import { Faculty } from '../faculty/faculty.model';
 import { IAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
+import { sendImageToCloudinary } from '../../app/utils/sendImageTOCloudinary';
 
-const createStudentInToDB = async (password: string, studentData: IStudent) => {
+const createStudentInToDB = async (file:any,password: string, studentData: IStudent) => {
   const userData: Partial<IUser> = {};
   userData.password = password || (config.default_pass as string);
 
@@ -29,12 +30,13 @@ const createStudentInToDB = async (password: string, studentData: IStudent) => {
   try {
     session.startTransaction();
 
+    
     const admissionSemester = await AcademicSemester.findById(
-      studentData.admissionSemester,
+        studentData.admissionSemester,
     );
 
     userData.role = 'student';
-
+    
     userData.email = studentData.email;
 
     // manulally generate id
@@ -42,7 +44,11 @@ const createStudentInToDB = async (password: string, studentData: IStudent) => {
       admissionSemester as IAcademicSemester,
     );
 
-    //
+    //upload imagee 
+    const imageName = `${userData.id}${studentData?.name?.firstName}`;
+    const path = file?.path;
+
+    sendImageToCloudinary(imageName,path)
 
     const newUser = await User.create([userData], { session });
 
@@ -56,7 +62,7 @@ const createStudentInToDB = async (password: string, studentData: IStudent) => {
     studentData.user = newUser[0]._id; //reference _id
 
     const newStudent = await Student.create([studentData], { session });
-
+    
     if (!newStudent) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Faild to create student');
     }
