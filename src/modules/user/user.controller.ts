@@ -85,6 +85,19 @@ const getMe = catchAsync(async(req,res)=>{
     message: 'My Data is retrieved successfully',
     data: result,
   });
+});
+
+const changeStatus = catchAsync(async(req,res)=>{
+  const {id} = req.params;
+
+  const result = await UserService.changeStatusInToDB(id,req.body)
+
+  sendResponse(res,{
+    statusCode:httpStatus.OK,
+    success:true,
+    message:'Status is updated successfully',
+    data:result
+  })
 })
 
 export const UserController = {
@@ -92,5 +105,6 @@ export const UserController = {
     getAllUser,
     createFaculty,
     createAdmin,
-    getMe
+    getMe,
+    changeStatus
 }
