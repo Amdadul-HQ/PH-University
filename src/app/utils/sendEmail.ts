@@ -3,15 +3,14 @@ import config from '../config';
 
 export const sendEmail = async() =>{
     const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: config.NODE_ENV === 'production', // true for port 465, false for other ports
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // true for port 465, false for other ports
       auth: {
         user: 'amdaulhaque15@gmail.com',
-        pass: 'ronl bvut jjui ihlo',
+        pass: 'bkbk qgye seha yszr',
       },
     });
-
 
        await transporter.sendMail({
          from: 'amdaulhaque15@gmail.com', // sender address

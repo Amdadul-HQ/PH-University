@@ -17,7 +17,8 @@ async function main() {
 }
 
 main();
-process.on('unhandledRejection',()=>{
+process.on('unhandledRejection',(error)=>{
+  console.log(error,'error');
   console.log('unhandleRejection is deleted, shutting down....');
   if(Server){
     server = server.close(()=> {
