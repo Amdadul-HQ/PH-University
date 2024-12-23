@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { UserController } from './user.controller';
 import { studentZodSchema } from '../student/student.validate';
 import validateRequest from '../../app/middleware/validateRequest';
@@ -7,12 +7,18 @@ import { AdminValidations } from '../admin/admin.validate';
 import auth from '../../app/middleware/auth';
 import { USER_ROLE } from './user.constant';
 import { UserValidation } from './user.validate';
+import { upload } from '../../app/utils/sendImageTOCloudinary';
 
 const UserRoute = express.Router();
 
 // Create stuent
 UserRoute.post(
   '/create-student',
+  upload.single('file'),
+  (req:Request,res:Response,next:NextFunction)=>{
+    req.body = JSON.parse(req.body.data);
+    next()
+  },
   validateRequest(studentZodSchema.createStudentValidationSchema),
   UserController.createStudent,
 );
