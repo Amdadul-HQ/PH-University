@@ -29,10 +29,22 @@ const forgetPasswordValidationSchema = z.object({
   })
 })
 
+const resetPassword = z.object({
+  bogy:z.object({
+    id:z.string({
+      required_error:'user id is required'
+    }),
+    newPassword:z.string({
+      required_error:'Password is required'
+    })
+  })
+})
+
 
 export const AuthValidation = {
     loginValidationSchema,
     changePasswordValidationSchema,
     refreshTokenValidation,
-    forgetPasswordValidationSchema
+    forgetPasswordValidationSchema,
+    resetPassword
 }

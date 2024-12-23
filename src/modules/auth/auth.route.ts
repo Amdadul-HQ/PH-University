@@ -26,4 +26,10 @@ AuthRoute.post('/forget-password',validateRequest(AuthValidation.forgetPasswordV
 AuthController.forgetPassword
 )
 
+AuthRoute.post(
+  '/reset-password',
+  validateRequest(AuthValidation.resetPassword),
+  AuthController.resetPassword,
+);
+
 export const AuthRoutes = AuthRoute
