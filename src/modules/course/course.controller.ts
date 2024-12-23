@@ -1,12 +1,10 @@
-import httpStatus from "http-status";
-import { catchAsync } from "../../app/utils/catchAsync";
-import sendResponse from "../../app/utils/sendResponse";
-import { CourseServices } from "./course.service";
+import httpStatus from 'http-status';
+import { catchAsync } from '../../app/utils/catchAsync';
+import sendResponse from '../../app/utils/sendResponse';
+import { CourseServices } from './course.service';
 
 const createCourse = catchAsync(async (req, res) => {
-  const result = await CourseServices.createCourseInToDB(
-    req.body,
-  );
+  const result = await CourseServices.createCourseInToDB(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -26,9 +24,7 @@ const getAllCourses = catchAsync(async (req, res) => {
 });
 
 const getSingleCourse = catchAsync(async (req, res) => {
-  const result = await CourseServices.getSingleCourseFromDB(
-    req.params.id,
-  );
+  const result = await CourseServices.getSingleCourseFromDB(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -60,11 +56,13 @@ const deleteCourse = catchAsync(async (req, res) => {
   });
 });
 
-
 const assignCourseToFaculty = catchAsync(async (req, res) => {
-  const {id} = req.params
-  const {faculties} = req.body
-  const result = await CourseServices.assignCourseToFacultyInToDB(id,faculties);
+  const { id } = req.params;
+  const { faculties } = req.body;
+  const result = await CourseServices.assignCourseToFacultyInToDB(
+    id,
+    faculties,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -90,7 +88,6 @@ const removeFacultyFromCourse = catchAsync(async (req, res) => {
   });
 });
 
-
 export const CourseController = {
   createCourse,
   getAllCourses,
@@ -98,5 +95,5 @@ export const CourseController = {
   updateCourses,
   deleteCourse,
   assignCourseToFaculty,
-  removeFacultyFromCourse
-}
+  removeFacultyFromCourse,
+};

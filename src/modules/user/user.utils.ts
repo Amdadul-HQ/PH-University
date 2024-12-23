@@ -40,7 +40,6 @@ export const generateStudentId = async (payload: IAcademicSemester) => {
   return incrementId;
 };
 
-
 // Faculty ID
 export const findLastFacultyId = async () => {
   const lastFaculty = await User.findOne(
@@ -60,7 +59,7 @@ export const findLastFacultyId = async () => {
   return lastFaculty?.id ? lastFaculty.id.substring(2) : undefined;
 };
 
-// Faculty Generate 
+// Faculty Generate
 export const generateFacultyId = async () => {
   let currentId = (0).toString();
   const lastFacultyId = await findLastFacultyId();

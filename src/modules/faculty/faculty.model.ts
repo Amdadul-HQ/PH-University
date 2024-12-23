@@ -1,24 +1,24 @@
-import { model, Schema } from "mongoose";
-import { FacultyModel, IFaculty, IUserName } from "./faculty.interface";
-import { BloodGroup, Gender } from "./faculty.constant";
+import { model, Schema } from 'mongoose';
+import { FacultyModel, IFaculty, IUserName } from './faculty.interface';
+import { BloodGroup, Gender } from './faculty.constant';
 
 const userNameSchema = new Schema<IUserName>({
-    firstName:{
-        type:String,
-        required:[true,'First Name is Required'],
-        trim:true,
-        maxlength:[20,'Name can not be more than 20 characters']
-    },
-    middleName:{
-        type:String,
-        trim:true
-    },
-    lastName:{
-        type:String,
-        trim:true,
-        required:[true,'Last Name is Required'],
-        maxlength:[20,'Name can not be more than 20 characters'],
-    }
+  firstName: {
+    type: String,
+    required: [true, 'First Name is Required'],
+    trim: true,
+    maxlength: [20, 'Name can not be more than 20 characters'],
+  },
+  middleName: {
+    type: String,
+    trim: true,
+  },
+  lastName: {
+    type: String,
+    trim: true,
+    required: [true, 'Last Name is Required'],
+    maxlength: [20, 'Name can not be more than 20 characters'],
+  },
 });
 
 const facultySchema = new Schema<IFaculty, FacultyModel>(
@@ -114,19 +114,13 @@ facultySchema.pre('aggregate', function (next) {
   next();
 });
 
+facultySchema.virtual('fullName').get(function () {
+  return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`;
+});
 
-facultySchema.virtual('fullName').get(function(){
-    return(
-        `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`
-    )
-})
-
-
-facultySchema.statics.isUserExists = async function (id:string) {
-    const existingUser = await Faculty.findOne({id});
-    return existingUser;
-    
+facultySchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await Faculty.findOne({ id });
+  return existingUser;
 };
 
-
-export const Faculty = model<IFaculty,FacultyModel>('Faculty',facultySchema)
+export const Faculty = model<IFaculty, FacultyModel>('Faculty', facultySchema);

@@ -1,4 +1,4 @@
-import {z} from 'zod';
+import { z } from 'zod';
 
 const createdAcademicFacultyValidationSchema = z.object({
   body: z.object({
@@ -17,6 +17,6 @@ const updateAcademicFacultyValidationSchema = z.object({
 });
 
 export const AcademicFacultyValidation = {
-    createdAcademicFacultyValidationSchema,
-    updateAcademicFacultyValidationSchema
-}   
+  createdAcademicFacultyValidationSchema,
+  updateAcademicFacultyValidationSchema,
+};

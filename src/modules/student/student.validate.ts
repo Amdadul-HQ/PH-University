@@ -72,8 +72,8 @@ const createStudentValidationSchema = z.object({
         .string()
         .min(1, 'Emergency Number is Required')
         .max(11, 'Emergency Contact Number Cannot Be More Than 11 Characters'),
-      admissionSemester:z.string(),
-      academicDepartment:z.string(),
+      admissionSemester: z.string(),
+      academicDepartment: z.string(),
       presentAddress: z.string().min(1, 'Present Address Must Be Provided'),
       permanentAddress: z.string().min(1, 'Permanent Address is Required'),
       profileImg: z.string().optional(),

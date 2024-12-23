@@ -13,7 +13,7 @@ import { studentSearchAbleFields } from './student.constant';
 
 //   // custome instance method
 //   // const student = new Student(studentData);
-  
+
 //   // if(await student.isStudentExists(studentData.id)){
 //   //   throw new Error("Student Alreay Register")
 //   // }
@@ -21,7 +21,7 @@ import { studentSearchAbleFields } from './student.constant';
 
 //   // build in instance method
 //   // const result = await Student.create(studentData);
-  
+
 //   if(await Student.isStudentExists(studentData.id)){
 //     throw new Error("Staudent Alreay Register!!")
 //   }
@@ -30,22 +30,16 @@ import { studentSearchAbleFields } from './student.constant';
 // };
 
 // Students gell
-const getAllStudentsFromDB = async (query:Record<string,unknown>) => {
-  
-
+const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
   // const queryObj = {...query}
-
 
   // let searchTerm = ''
 
-
   // const studentSearchAbleFields = ['email', 'name.firstName', 'presentAddress'];
-
 
   // if(query?.searchTearm){
   //   searchTerm = query?.searchTerm as string;
   // }
-
 
   // const searchQuery = Student.find({
   //   $or: studentSearchAbleFields.map((field) => ({
@@ -56,13 +50,10 @@ const getAllStudentsFromDB = async (query:Record<string,unknown>) => {
   // // Filtering
   // const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
 
-
   // excludeFields.forEach(field => delete queryObj[field])
 
-  
-
   // const filterQuery = searchQuery
-  //   .find(queryObj) 
+  //   .find(queryObj)
   //   .populate('admissionSemester')
   //   .populate({
   //     path: 'academicDepartment',
@@ -75,14 +66,14 @@ const getAllStudentsFromDB = async (query:Record<string,unknown>) => {
 
   // if(query.sort){
   //   sort = query?.sort as string
-  // }  
+  // }
 
   // const sortQuery = filterQuery.sort(sort);
 
   // let page = 1;
   // let limit = 1;
   // let skip = 1;
-  
+
   // if(query.limit){
   //   limit = Number(query.limit)
   // }
@@ -94,7 +85,6 @@ const getAllStudentsFromDB = async (query:Record<string,unknown>) => {
 
   // const paginateQuery = sortQuery.skip(skip)
 
-  
   // const limitQuery = paginateQuery.limit(limit)
 
   // // fields limiting
@@ -107,21 +97,28 @@ const getAllStudentsFromDB = async (query:Record<string,unknown>) => {
 
   // return fieldsQuery;
 
-  const studentQuery = new QueryBuilder(Student.find()
-  .populate('user')
-  .populate('admissionSemester')
-    .populate({
-      path: 'academicDepartment',
-      populate: {
-        path: 'academicFaculty',
-      },
-    }),query)
+  const studentQuery = new QueryBuilder(
+    Student.find()
+      .populate('user')
+      .populate('admissionSemester')
+      .populate({
+        path: 'academicDepartment',
+        populate: {
+          path: 'academicFaculty',
+        },
+      }),
+    query,
+  );
 
-  studentQuery.search(studentSearchAbleFields).filter().sort().paginate().fields();
+  studentQuery
+    .search(studentSearchAbleFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
   const result = await studentQuery.modelQuery;
 
   return result;
-
 };
 
 // Get singel Student
@@ -138,86 +135,78 @@ const getSingleStudentsFromDB = async (id: string) => {
 };
 
 // Delete Student From db
-const deleteStudentFromDB = async (id:string) =>{
-  
-  
+const deleteStudentFromDB = async (id: string) => {
   const session = await mongoose.startSession();
-  
-  try{
-    session.startTransaction();
-    
-    const isStudentExists = await Student.isStudentExists(id)
 
+  try {
+    session.startTransaction();
+
+    const isStudentExists = await Student.isStudentExists(id);
 
     if (isStudentExists == null) {
-      throw new AppError(httpStatus.NOT_FOUND,'Staudent Not Found!!');
+      throw new AppError(httpStatus.NOT_FOUND, 'Staudent Not Found!!');
     }
 
+    const deletedStudent = await Student.findByIdAndUpdate(
+      id,
+      { isDeleted: true },
+      { new: true, session },
+    );
 
+    if (!deletedStudent) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete Stuedent');
+    }
 
-  const deletedStudent = await Student.findByIdAndUpdate(
-    id,
-    { isDeleted: true },
-    { new: true, session },
-  );
+    const userId = deletedStudent.user;
 
-  if(!deletedStudent){
-    throw new AppError(httpStatus.BAD_REQUEST,'Failed to delete Stuedent')
-  }
+    const deleteUser = await User.findByIdAndUpdate(
+      userId,
+      { isDeleted: true },
+      { new: true, session },
+    );
 
-  const userId = deletedStudent.user;
+    if (!deleteUser) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Faild to delete user');
+    }
 
-  const deleteUser = await User.findByIdAndUpdate(
-    userId,
-    { isDeleted: true },
-    { new: true, session },
-  );
+    await session.commitTransaction();
+    await session.endSession();
 
-  if(!deleteUser){
-    throw new AppError(httpStatus.BAD_REQUEST,'Faild to delete user')
-  }
-
-  await session.commitTransaction();
-  await session.endSession()
-
-  return deletedStudent
-  }
-  catch(error:any){
-    if(error){
+    return deletedStudent;
+  } catch (error: any) {
+    if (error) {
       await session.abortTransaction();
       await session.endSession();
-      throw new AppError(httpStatus.BAD_GATEWAY,`${error.message}`)
+      throw new AppError(httpStatus.BAD_GATEWAY, `${error.message}`);
     }
   }
-
-
-
-}
+};
 
 // Update Student Into DB
-const updateStudentIntoDB = async (id:string,updateData:Partial<IStudent> ) => {
-
-  if(!(await Student.isStudentExists(id))){
+const updateStudentIntoDB = async (
+  id: string,
+  updateData: Partial<IStudent>,
+) => {
+  if (!(await Student.isStudentExists(id))) {
     throw new Error('Staudent Not Found!!');
   }
 
   const { name, guardian, localGurdian, ...remaingStuentData } = updateData;
 
-  // 
+  //
 
-  const modifiedUpdateData :Record<string,unknown> = {
-    ...remaingStuentData
-  }
+  const modifiedUpdateData: Record<string, unknown> = {
+    ...remaingStuentData,
+  };
 
-  if(name && Object.keys(name).length){
-    for(const [key,value] of Object.entries(name)){
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
       modifiedUpdateData[`name.${key}`] = value;
     }
   }
 
-
-  if(guardian && Object.keys(guardian).length){
-    for(const[key,value] of Object.entries(guardian)){
+  if (guardian && Object.keys(guardian).length) {
+    for (const [key, value] of Object.entries(guardian)) {
       modifiedUpdateData[`guardian.${key}`] = value;
     }
   }
@@ -228,13 +217,16 @@ const updateStudentIntoDB = async (id:string,updateData:Partial<IStudent> ) => {
     }
   }
 
-  const result = await Student.findByIdAndUpdate(id,modifiedUpdateData,{new:true,runValidators:true})
+  const result = await Student.findByIdAndUpdate(id, modifiedUpdateData, {
+    new: true,
+    runValidators: true,
+  });
   return result;
-}
+};
 
 export const StudentServices = {
   getAllStudentsFromDB,
   getSingleStudentsFromDB,
   deleteStudentFromDB,
-  updateStudentIntoDB
+  updateStudentIntoDB,
 };

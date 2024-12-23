@@ -15,16 +15,11 @@ const createOfferedCourse = catchAsync(async (req, res) => {
   });
 });
 
-const getAllOfferedCourses = catchAsync(async (req, res) => {
+const getAllOfferedCourses = catchAsync(async (req, res) => {});
 
+const getSingleOfferedCourses = catchAsync(async (req, res) => {
+  const { id } = req.params;
 });
-
-const getSingleOfferedCourses = catchAsync(
-  async (req, res) => {
-    const { id } = req.params;
-
-  },
-);
 
 const updateOfferedCourse = catchAsync(async (req, res) => {
   const { id } = req.params;
@@ -41,18 +36,16 @@ const updateOfferedCourse = catchAsync(async (req, res) => {
   });
 });
 
-const deleteOfferedCourseFromDB = catchAsync(
-  async (req, res) => {
-    const { id } = req.params;
-    const result = await OfferedCourseServices.de(id);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'OfferedCourse deleted successfully',
-      data: result,
-    });
-  },
-);
+const deleteOfferedCourseFromDB = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await OfferedCourseServices.de(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'OfferedCourse deleted successfully',
+    data: result,
+  });
+});
 
 export const OfferedCourseControllers = {
   createOfferedCourse,

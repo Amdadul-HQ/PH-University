@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import mongoose from "mongoose";
-import QueryBuilder from "../../app/builder/QueryBuilder";
-import { adminSearchableFields } from "./admin.constant";
-import { IAdmin } from "./admin.interface";
-import { Admin } from "./admin.model";
-import { AppError } from "../../app/errors/AppError";
-import httpStatus from "http-status";
-import { User } from "../user/user.model";
+import mongoose from 'mongoose';
+import QueryBuilder from '../../app/builder/QueryBuilder';
+import { adminSearchableFields } from './admin.constant';
+import { IAdmin } from './admin.interface';
+import { Admin } from './admin.model';
+import { AppError } from '../../app/errors/AppError';
+import httpStatus from 'http-status';
+import { User } from '../user/user.model';
 
 const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
   const adminQuery = new QueryBuilder(Admin.find(), query)
@@ -38,7 +38,7 @@ const updateAdminIntoDB = async (id: string, payload: Partial<IAdmin>) => {
     }
   }
 
-  const result = await Admin.findByIdAndUpdate( id , modifiedUpdatedData, {
+  const result = await Admin.findByIdAndUpdate(id, modifiedUpdatedData, {
     new: true,
     runValidators: true,
   });

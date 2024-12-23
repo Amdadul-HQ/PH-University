@@ -3,13 +3,9 @@ import { StudentServices } from './student.service';
 import sendResponse from '../../app/utils/sendResponse';
 import httpStatus from 'http-status';
 
-
-
 // Get All student
 const getAllStudent = catchAsync(async (req, res) => {
-  
-  const query = req.query
-
+  const query = req.query;
 
   const result = await StudentServices.getAllStudentsFromDB(query);
 
@@ -23,7 +19,7 @@ const getAllStudent = catchAsync(async (req, res) => {
 });
 
 // Get Singel Student
-const getSingelStudent = catchAsync( async (req, res) => {
+const getSingelStudent = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await StudentServices.getSingleStudentsFromDB(id);
   sendResponse(res, {
@@ -32,8 +28,7 @@ const getSingelStudent = catchAsync( async (req, res) => {
     message: 'single Student data',
     data: result,
   });
-  
-})
+});
 
 const deleteSingelStudent = catchAsync(async (req, res) => {
   const { id } = req.params;
@@ -49,54 +44,54 @@ const deleteSingelStudent = catchAsync(async (req, res) => {
 // Update Student Information
 const updateSingleStudent = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const {student} = req.body;
-  
-  const result = await StudentServices.updateStudentIntoDB(id,student)
+  const { student } = req.body;
+
+  const result = await StudentServices.updateStudentIntoDB(id, student);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-      message: 'Student data Updated',
-      data: result,
-    });
-  })
-  
-  export const StudentControllers = {
-    // createStudent,
-    getAllStudent,
-    getSingelStudent,
-    deleteSingelStudent,
-    updateSingleStudent
-  };
-  
-  // import { studentZodSchema } from './student.validate';
-  
-  // const createStudent = async (req: Request, res: Response) => {
-  //   try {
-  //     const { student } = req.body;
-  
-  //     const zodValidation = studentZodSchema.safeParse(student);
-      
-  //     if(!zodValidation.success){
-  //         res.status(500).json({
-  //           success: false,
-  //           message: 'Something went wrong',
-  //           error: zodValidation.error.format(),
-  //         });
-  //     }
-  //     // will call service func to send this data
-  //     const result = await StudentServices.createStudentInToDB(student);
-  
-  //     // send response
-  //     res.status(201).json({
-  //       success: true,
-  //       message: 'Student is created succesfully',
-  //       data: result,
-  //     });
-  //   } catch (error:any) {
-  //     res.status(500).json({
-  //       success: false,
-  //       message: error.message || 'Something went wrong',
-  //       // error: error,
-  //     });
-  //   }
-  // };
+    message: 'Student data Updated',
+    data: result,
+  });
+});
+
+export const StudentControllers = {
+  // createStudent,
+  getAllStudent,
+  getSingelStudent,
+  deleteSingelStudent,
+  updateSingleStudent,
+};
+
+// import { studentZodSchema } from './student.validate';
+
+// const createStudent = async (req: Request, res: Response) => {
+//   try {
+//     const { student } = req.body;
+
+//     const zodValidation = studentZodSchema.safeParse(student);
+
+//     if(!zodValidation.success){
+//         res.status(500).json({
+//           success: false,
+//           message: 'Something went wrong',
+//           error: zodValidation.error.format(),
+//         });
+//     }
+//     // will call service func to send this data
+//     const result = await StudentServices.createStudentInToDB(student);
+
+//     // send response
+//     res.status(201).json({
+//       success: true,
+//       message: 'Student is created succesfully',
+//       data: result,
+//     });
+//   } catch (error:any) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message || 'Something went wrong',
+//       // error: error,
+//     });
+//   }
+// };

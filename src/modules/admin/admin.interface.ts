@@ -16,7 +16,7 @@ export interface IUserName {
   firstName: string;
   middleName: string;
   lastName: string;
-};
+}
 
 export interface IAdmin {
   id: string;
@@ -33,7 +33,7 @@ export interface IAdmin {
   permanentAddress: string;
   profileImg?: string;
   isDeleted: boolean;
-};
+}
 
 export interface AdminModel extends Model<IAdmin> {
   isUserExists(id: string): Promise<IAdmin | null>;

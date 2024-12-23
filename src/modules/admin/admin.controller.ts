@@ -1,7 +1,7 @@
-import httpStatus from "http-status";
-import sendResponse from "../../app/utils/sendResponse";
-import { catchAsync } from "../../app/utils/catchAsync";
-import { AdminServices } from "./admin.service";
+import httpStatus from 'http-status';
+import sendResponse from '../../app/utils/sendResponse';
+import { catchAsync } from '../../app/utils/catchAsync';
+import { AdminServices } from './admin.service';
 
 const getSingleAdmin = catchAsync(async (req, res) => {
   const { id } = req.params;

@@ -9,7 +9,6 @@ import {
 // import bcrypt from 'bcrypt';
 // import config from '../../app/config';
 
-
 // sub sechema
 
 const studentValidationSchema = new Schema<IStudentName>({
@@ -117,7 +116,7 @@ const createStudentValidationSchema = new Schema<IStudent, IStudentModel>(
       type: String,
       required: [true, 'Student Email Is Required'],
       trim: true,
-      unique:true
+      unique: true,
     },
     contactNo: {
       type: String,
@@ -196,8 +195,8 @@ const createStudentValidationSchema = new Schema<IStudent, IStudentModel>(
       default: false,
     },
   },
-  { 
-    timestamps:true,
+  {
+    timestamps: true,
     toJSON: {
       virtuals: true,
     },
@@ -250,7 +249,7 @@ createStudentValidationSchema.pre('findOne', function (next) {
 createStudentValidationSchema.statics.isStudentExists = async function (
   id: string,
 ) {
-  const existStudent = await Student.findById({ _id:id, isDeleted: false });
+  const existStudent = await Student.findById({ _id: id, isDeleted: false });
   return existStudent;
 };
 
@@ -264,6 +263,3 @@ export const Student = model<IStudent, IStudentModel>(
   'student',
   createStudentValidationSchema,
 );
-
-
-

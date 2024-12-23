@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Model, Types } from "mongoose";
-
+import { Model, Types } from 'mongoose';
 
 export interface IGuardian {
   fatherName: string;
@@ -25,7 +24,7 @@ export interface ILocalGuardian {
 }
 export interface IStudent {
   id: string;
-  user: Types.ObjectId
+  user: Types.ObjectId;
   password: string;
   name: IStudentName;
   gender: 'male' | 'female';
@@ -38,18 +37,16 @@ export interface IStudent {
   permanentAddress: string;
   guardian: IGuardian;
   localGurdian: ILocalGuardian;
-  admissionSemester :Types.ObjectId;
-  academicDepartment:Types.ObjectId;
+  admissionSemester: Types.ObjectId;
+  academicDepartment: Types.ObjectId;
   profileImg?: string;
-  isDeleted:boolean
+  isDeleted: boolean;
 }
 
 // Statics
-export interface IStudentModel extends Model<IStudent>{
-  isStudentExists(id:string):Promise<IStudent|null>
+export interface IStudentModel extends Model<IStudent> {
+  isStudentExists(id: string): Promise<IStudent | null>;
 }
-
-
 
 // instance method
 // export interface IStudentMethods {

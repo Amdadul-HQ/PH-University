@@ -9,15 +9,23 @@ const StudentRouter = express.Router();
 // StudentRouter.post('/create-student', StudentControllers.createStudent);
 
 // Get All Students
-StudentRouter.get('/get-all-students',auth(USER_ROLE.admin), StudentControllers.getAllStudent);
+StudentRouter.get(
+  '/get-all-students',
+  auth(USER_ROLE.admin),
+  StudentControllers.getAllStudent,
+);
 
 // Get Single Students
-StudentRouter.get('/:id',auth(USER_ROLE.admin,USER_ROLE.faculty,USER_ROLE.student), StudentControllers.getSingelStudent);
+StudentRouter.get(
+  '/:id',
+  auth(USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student),
+  StudentControllers.getSingelStudent,
+);
 
 // Delet Students
-StudentRouter.delete('/:id',StudentControllers.deleteSingelStudent)
+StudentRouter.delete('/:id', StudentControllers.deleteSingelStudent);
 
 // Update Students
-StudentRouter.patch('/:id',StudentControllers.updateSingleStudent)
+StudentRouter.patch('/:id', StudentControllers.updateSingleStudent);
 
 export const StudentRouters = StudentRouter;

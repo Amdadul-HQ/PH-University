@@ -17,26 +17,33 @@ UserRoute.post(
   UserController.createStudent,
 );
 
-// Create Faculty 
-UserRoute.post('/create-faculty',validateRequest(facultyValidation.createFacultyValidationSchema),
-UserController.createFaculty
+// Create Faculty
+UserRoute.post(
+  '/create-faculty',
+  validateRequest(facultyValidation.createFacultyValidationSchema),
+  UserController.createFaculty,
 );
 
 // Create Admin
-UserRoute.post('/create-admin',validateRequest(AdminValidations.createAdminValidationSchema),
-UserController.createAdmin
+UserRoute.post(
+  '/create-admin',
+  validateRequest(AdminValidations.createAdminValidationSchema),
+  UserController.createAdmin,
 );
 
-UserRoute.get('/',UserController.getAllUser)
+UserRoute.get('/', UserController.getAllUser);
 
+UserRoute.get(
+  '/me',
+  auth(USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student),
+  UserController.getMe,
+);
 
-UserRoute.get('/me',auth(USER_ROLE.admin,USER_ROLE.faculty,USER_ROLE.student),
-UserController.getMe
-)
-
-UserRoute.post('/change-status/:id',auth(USER_ROLE.admin),validateRequest(UserValidation.changeStatusValidationSchema),
-UserController.changeStatus
-)
-
+UserRoute.post(
+  '/change-status/:id',
+  auth(USER_ROLE.admin),
+  validateRequest(UserValidation.changeStatusValidationSchema),
+  UserController.changeStatus,
+);
 
 export const UserRoutes = UserRoute;
