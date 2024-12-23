@@ -12,7 +12,7 @@ const StudentRouter = express.Router();
 StudentRouter.get('/get-all-students',auth(USER_ROLE.admin), StudentControllers.getAllStudent);
 
 // Get Single Students
-StudentRouter.get('/:id', StudentControllers.getSingelStudent);
+StudentRouter.get('/:id',auth(USER_ROLE.student), StudentControllers.getSingelStudent);
 
 // Delet Students
 StudentRouter.delete('/:id',StudentControllers.deleteSingelStudent)
