@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import { UserService } from "./user.service";
 import { catchAsync } from "../../app/utils/catchAsync";
 import sendResponse from "../../app/utils/sendResponse";
+import { AppError } from "../../app/errors/AppError";
 
 
 
@@ -72,9 +73,31 @@ const getAllUser = catchAsync(async(req,res)=>{
 })
 
 
+const getMe = catchAsync(async(req,res)=>{
+
+
+  const token = req.headers.authorization;
+
+  if(!token){
+    throw new AppError(httpStatus.FORBIDDEN,'Access token not found')
+  }
+
+
+
+  const result = await UserService.getMeFromDB(token)
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'All Users',
+    data: result,
+  });
+})
+
 export const UserController = {
     createStudent,
     getAllUser,
     createFaculty,
-    createAdmin
+    createAdmin,
+    getMe
 }

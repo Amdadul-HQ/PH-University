@@ -4,6 +4,8 @@ import { studentZodSchema } from '../student/student.validate';
 import validateRequest from '../../app/middleware/validateRequest';
 import { facultyValidation } from '../faculty/faculty.validation';
 import { AdminValidations } from '../admin/admin.validate';
+import auth from '../../app/middleware/auth';
+import { USER_ROLE } from './user.constant';
 
 const UserRoute = express.Router();
 
@@ -26,6 +28,10 @@ UserController.createAdmin
 
 UserRoute.get('/',UserController.getAllUser)
 
+
+UserRoute.get('/me',auth(USER_ROLE.admin,USER_ROLE.faculty,USER_ROLE.student),
+UserController.getMe
+)
 
 
 export const UserRoutes = UserRoute;

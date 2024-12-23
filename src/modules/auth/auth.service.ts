@@ -5,8 +5,7 @@ import { User } from "../user/user.model";
 import { ILoginUser } from "./auth.interface";
 import config from "../../app/config";
 import bcrypt from "bcrypt"
-import { createToken } from "./auth.utils";
-import jwt from "jsonwebtoken"
+import { createToken, verifyToken } from "./auth.utils";
 import { sendEmail } from "../../app/utils/sendEmail";
 
 const loginUserInToDB = async(payload:ILoginUser)=>{
@@ -94,13 +93,10 @@ const changePasswordInToDB = async(user:JwtPayload,payload:{oldPassword:string,n
 const refreshTokenFromDB =async(token:string)=>{
 
             
-        const decoded = jwt.verify(
-          token,
-          config.jwt_refresh_secret as string,
-        ) as JwtPayload;
+        const decoded = verifyToken(token,config.jwt_refresh_secret as string)
     
     
-         const {userId,iat} = decoded
+         const {userId,iat} = decoded as JwtPayload
 
     
          const isUserExists = await User.isUserExistsByCustomId(userId)
@@ -196,7 +192,7 @@ const resetPasswordInToDB = async(
     throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked ! !');
   }
 
-  const decoded = jwt.verify(
+  const decoded = verifyToken(
     token,
     config.jwt_access_secret as string,
   ) as JwtPayload;
