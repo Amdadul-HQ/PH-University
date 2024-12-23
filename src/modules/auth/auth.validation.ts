@@ -30,7 +30,7 @@ const forgetPasswordValidationSchema = z.object({
 })
 
 const resetPassword = z.object({
-  bogy:z.object({
+  body:z.object({
     id:z.string({
       required_error:'user id is required'
     }),
