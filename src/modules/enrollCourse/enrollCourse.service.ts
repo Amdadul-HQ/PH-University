@@ -7,6 +7,7 @@ import { Student } from "../student/student.model";
 import mongoose from "mongoose";
 import { SemesterRegistration } from "../semesterRegistration/semesterRegistration.model";
 import { Course } from "../course/course.model";
+import { Faculty } from "../faculty/faculty.model";
 
 const createEnrolledCourseIntoDB = async (id:string,payload:IEnrolledCourse) =>{
     const {offeredCourse} = payload;
@@ -149,6 +150,14 @@ const updateEnrolledCourseMarksIntoDB = async (
 
     if(!isStudentExists){
         throw new AppError(httpStatus.NOT_FOUND,"Student not found!");
+    }
+
+    const faculty = await Faculty.findOne({id:facultyId}).select("_id")
+
+    const isCourseBelongToFaculty = await EnrolledCourse.findOne({semesterRegistration,offeredCourse,student,faculty:faculty?._id});
+
+    if(!isCourseBelongToFaculty){
+        throw new AppError(httpStatus.UNAVAILABLE_FOR_LEGAL_REASONS,'You can you update this student!')
     }
 
     
