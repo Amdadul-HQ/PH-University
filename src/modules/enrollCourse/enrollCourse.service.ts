@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import { SemesterRegistration } from "../semesterRegistration/semesterRegistration.model";
 import { Course } from "../course/course.model";
 import { Faculty } from "../faculty/faculty.model";
+import { object } from "zod";
 
 const createEnrolledCourseIntoDB = async (id:string,payload:IEnrolledCourse) =>{
     const {offeredCourse} = payload;
@@ -154,13 +155,29 @@ const updateEnrolledCourseMarksIntoDB = async (
 
     const faculty = await Faculty.findOne({id:facultyId}).select("_id")
 
+    if(!faculty){
+        throw  new AppError(httpStatus.NOT_FOUND,"Faculty not Found!")
+    }
+
     const isCourseBelongToFaculty = await EnrolledCourse.findOne({semesterRegistration,offeredCourse,student,faculty:faculty?._id});
 
     if(!isCourseBelongToFaculty){
         throw new AppError(httpStatus.UNAVAILABLE_FOR_LEGAL_REASONS,'You can you update this student!')
     }
 
-    
+    const modifiedData: Record<string,unknown> ={
+        ...courseMarks
+    };
+
+    if(courseMarks&& Object.keys(courseMarks).length){
+        for(const [key,value] of Object.entries(courseMarks)){
+            modifiedData[`courseMarks.${key}`] = value
+        }
+    };
+
+    const result  = await EnrolledCourse.findByIdAndUpdate(isCourseBelongToFaculty._id,modifiedData,{new:true});
+
+    return result;
     
 };
 
