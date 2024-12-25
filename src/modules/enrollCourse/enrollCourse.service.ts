@@ -15,6 +15,8 @@ const createEnrolledCourseIntoDB = async (id:string,payload:IEnrolledCourse) =>{
 
     const student = await Student.findOne({id}).select('id')
 
+    
+    
     if(!student){
         throw new AppError(httpStatus.NOT_FOUND,"Student Not Found")
     }
@@ -22,8 +24,10 @@ const createEnrolledCourseIntoDB = async (id:string,payload:IEnrolledCourse) =>{
     if(!isOfferedCourseExists){
         throw new AppError(httpStatus.NOT_FOUND,"Foofered Course not found")
     }
-
+    
     const course = await Course.findById(isOfferedCourseExists.course);
+    
+    const currentCredits = course?.credits
     
     if(isOfferedCourseExists?.maxCapacity<=0){
         throw new AppError(httpStatus.BAD_GATEWAY,"Room is Full")
@@ -75,7 +79,7 @@ const createEnrolledCourseIntoDB = async (id:string,payload:IEnrolledCourse) =>{
 
     const totalCredits = enrolledCourse.length>0 ? enrolledCourse[0].totalEnrolledCredits : 0
 
-    if(totalCredits && semesterRegistration?.maxCredit && totalCredits + course?.credits > semesterRegistration?.maxCredit ){
+    if(totalCredits && semesterRegistration?.maxCredit && totalCredits + currentCredits > semesterRegistration?.maxCredit ){
         throw new AppError(httpStatus.BAD_GATEWAY,"You have exceeded maxium number of credits!")
     }
 
