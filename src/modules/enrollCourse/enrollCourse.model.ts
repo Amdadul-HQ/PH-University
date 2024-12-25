@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
-import { IEnrolledCourse, IEnrolledCourseMarks } from './enrollCourse.validation';
 import { Grade } from './enrollCourse.constant';
+import { IEnrolledCourse, IEnrolledCourseMarks } from './enrollCourse.interface';
 
 const courseMarksSchema = new Schema<IEnrolledCourseMarks>(
   {
