@@ -121,6 +121,7 @@ const createFacultyInToDB = async (password: string, payload: IFaculty) => {
 
     userData.id = await generateFacultyId();
 
+    
     // create a user (transaction-1)
     const newUser = await User.create([userData], { session });
 

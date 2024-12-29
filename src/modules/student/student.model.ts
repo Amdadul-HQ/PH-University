@@ -142,6 +142,7 @@ const createStudentValidationSchema = new Schema<IStudent, IStudentModel>(
     },
     profileImg: {
       type: String,
+      default:''
     },
     id: {
       type: String,
