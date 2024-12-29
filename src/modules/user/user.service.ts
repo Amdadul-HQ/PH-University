@@ -53,11 +53,14 @@ const createStudentInToDB = async (file:any,password: string, studentData: IStud
 
     //upload imagee 
     const imageName = `${userData.id}${studentData?.name?.firstName}`;
-    const path = file?.path;
+    
+    if(file){
+      const path = file?.path;
 
-    const { secure_url } = await sendImageToCloudinary(imageName, path);
+      const { secure_url } = await sendImageToCloudinary(imageName, path);
 
-    studentData.profileImg=secure_url as string
+      studentData.profileImg = secure_url as string;
+    }
 
     const newUser = await User.create([userData], { session });
 
