@@ -39,6 +39,7 @@ export interface IStudent {
   localGurdian: ILocalGuardian;
   admissionSemester: Types.ObjectId;
   academicDepartment: Types.ObjectId;
+  academicFaculty:Types.ObjectId;
   profileImg?: string;
   isDeleted: boolean;
 }

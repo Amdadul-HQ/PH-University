@@ -156,6 +156,10 @@ const createStudentValidationSchema = new Schema<IStudent, IStudentModel>(
       type: Schema.Types.ObjectId,
       ref: 'AcademicDepartment',
     },
+    academicFaculty: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicFaculty',
+    },
     user: {
       type: Schema.Types.ObjectId,
       required: [true, 'User id is required'],

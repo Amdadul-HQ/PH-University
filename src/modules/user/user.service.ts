@@ -30,6 +30,13 @@ const createStudentInToDB = async (file:any,password: string, studentData: IStud
   try {
     session.startTransaction();
 
+    const academicDepartment = await AcademicDepartment.findById(studentData.academicDepartment);
+
+    if(!academicDepartment){
+      throw new AppError(httpStatus.NOT_FOUND,'Academic Department not found')
+    }
+
+    studentData.academicFaculty = academicDepartment.academicFaculty;
     
     const admissionSemester = await AcademicSemester.findById(
         studentData.admissionSemester,
@@ -50,7 +57,7 @@ const createStudentInToDB = async (file:any,password: string, studentData: IStud
 
     const { secure_url } = await sendImageToCloudinary(imageName, path);
 
-    studentData.profileImg=secure_url    
+    studentData.profileImg=secure_url as string
 
     const newUser = await User.create([userData], { session });
 
