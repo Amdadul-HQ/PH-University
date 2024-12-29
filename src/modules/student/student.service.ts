@@ -115,10 +115,14 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     .filter()
     .sort()
     .paginate()
-    .fields();
+    .fields()
+  
+  const meta = await studentQuery.countTotal()
   const result = await studentQuery.modelQuery;
-
-  return result;
+  return {
+    result,
+    meta
+  };
 };
 
 // Get singel Student
