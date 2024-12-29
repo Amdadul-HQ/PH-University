@@ -18,4 +18,5 @@ export default {
   cloud_api_key: process.env.CLOUD_API_KEY,
   cloud_api_secret: process.env.CLOUD_API_SECRET,
   cloud_url: process.env.CLOUDINARY_URL,
+  super_admin_password: process.env.SUPER_ADMIN_PASS,
 };
