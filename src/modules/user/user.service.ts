@@ -114,6 +114,8 @@ const createFacultyInToDB = async (password: string, payload: IFaculty) => {
     throw new AppError(400, 'Academic Department not found');
   }
 
+  payload.academicFaculty= academicDepartment.academicFaculty
+
   const session = await mongoose.startSession();
 
   try {
@@ -121,7 +123,7 @@ const createFacultyInToDB = async (password: string, payload: IFaculty) => {
 
     userData.id = await generateFacultyId();
 
-    
+
     // create a user (transaction-1)
     const newUser = await User.create([userData], { session });
 

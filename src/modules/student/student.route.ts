@@ -11,7 +11,7 @@ const StudentRouter = express.Router();
 // Get All Students
 StudentRouter.get(
   '/get-all-students',
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.admin,USER_ROLE.superAdmin),
   StudentControllers.getAllStudent,
 );
 
@@ -23,7 +23,7 @@ StudentRouter.get(
 );
 
 // Delet Students
-StudentRouter.delete('/:id', StudentControllers.deleteSingelStudent);
+StudentRouter.delete('/:id',auth(USER_ROLE.admin,USER_ROLE.superAdmin), StudentControllers.deleteSingelStudent);
 
 // Update Students
 StudentRouter.patch('/:id', StudentControllers.updateSingleStudent);

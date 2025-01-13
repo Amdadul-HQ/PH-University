@@ -27,6 +27,12 @@ UserRoute.post(
 // Create Faculty
 UserRoute.post(
   '/create-faculty',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  upload.single('file'),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = JSON.parse(req.body.data);
+    next();
+  },
   validateRequest(facultyValidation.createFacultyValidationSchema),
   UserController.createFaculty,
 );
@@ -34,6 +40,7 @@ UserRoute.post(
 // Create Admin
 UserRoute.post(
   '/create-admin',
+  auth(USER_ROLE.superAdmin),
   validateRequest(AdminValidations.createAdminValidationSchema),
   UserController.createAdmin,
 );
@@ -42,7 +49,7 @@ UserRoute.get('/', UserController.getAllUser);
 
 UserRoute.get(
   '/me',
-  auth(USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student),
+  auth(USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student,USER_ROLE.superAdmin),
   UserController.getMe,
 );
 
