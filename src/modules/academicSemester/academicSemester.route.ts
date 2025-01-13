@@ -2,6 +2,8 @@ import express from 'express';
 import { AcademicSemesterController } from './academicSemester.controller';
 import validateRequest from '../../app/middleware/validateRequest';
 import { AcademicSemesterValidation } from './academicSemester.validation';
+import auth from '../../app/middleware/auth';
+import { USER_ROLE } from '../user/user.constant';
 
 const AcademicSemesterRouter = express.Router();
 
@@ -14,7 +16,10 @@ AcademicSemesterRouter.post(
 );
 
 // Get all Academic Semester
-AcademicSemesterRouter.get('/', AcademicSemesterController.getAcademicSemester);
+AcademicSemesterRouter.get('/', 
+  auth(USER_ROLE.admin),
+  AcademicSemesterController.getAcademicSemester
+);
 
 // Singel Academic Semester
 AcademicSemesterRouter.get(
