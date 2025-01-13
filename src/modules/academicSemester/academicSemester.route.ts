@@ -17,7 +17,7 @@ AcademicSemesterRouter.post(
 
 // Get all Academic Semester
 AcademicSemesterRouter.get('/', 
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.admin,USER_ROLE.superAdmin),
   AcademicSemesterController.getAcademicSemester
 );
 
