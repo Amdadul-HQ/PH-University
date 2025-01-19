@@ -15,11 +15,20 @@ const createAcademicSemesterInToDB = async (payload: IAcademicSemester) => {
 
 // Get All Academic Semester
 const getAcademicSemesterFromDB = async (query: Record<string, unknown>) => {
-  const academicSemesterQuery = new QueryBuilder(AcademicSemester.find(), query).search(
-    academicSemesterSearchableFields,
-  );
+  const academicSemesterQuery = new QueryBuilder(AcademicSemester.find(), query)
+    .search(academicSemesterSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
   const result = await academicSemesterQuery.modelQuery;
-  return result;
+  const meta = await academicSemesterQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
 };
 
 // Get Singel Academic Semester
