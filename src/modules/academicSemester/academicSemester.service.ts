@@ -21,7 +21,6 @@ const getAcademicSemesterFromDB = async (query: Record<string, unknown>) => {
     .sort()
     .paginate()
     .fields();
-
   const result = await academicSemesterQuery.modelQuery;
   const meta = await academicSemesterQuery.countTotal();
 
