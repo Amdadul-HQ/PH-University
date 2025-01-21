@@ -17,8 +17,21 @@ const academicDepartmentSchema = new Schema<IAcadaemicDepartment>(
   },
   {
     timestamps: true,
+    virtuals:true
   },
 );
+
+
+// academicDepartmentSchema.virtual('academicFaculty').get(function () {
+//   return `${this?.academicFaculty.name} ${this?.name?.middleName} ${this?.name?.lastName}`;
+// });
+
+academicDepartmentSchema.virtual('academinName', {
+  ref: 'AcademicFaculty',
+  localField: 'academicFacultyName',
+  foreignField: '_id',
+  justOne: true,
+});
 
 academicDepartmentSchema.pre('save', async function (next) {
   const isDepartmentExist = await AcademicDepartment.findOne({
@@ -36,9 +49,7 @@ academicDepartmentSchema.pre('save', async function (next) {
 
 academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
   const id = this.getQuery();
-  console.log(id);
   const isDepartmentExist = await AcademicDepartment.findOne(id);
-  console.log(isDepartmentExist);
   if (!isDepartmentExist) {
     throw new AppError(404, 'This Department does not exist!');
   }
