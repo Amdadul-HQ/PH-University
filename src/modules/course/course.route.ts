@@ -2,6 +2,8 @@ import express from 'express';
 import validateRequest from '../../app/middleware/validateRequest';
 import { CourseValidation } from './course.validate';
 import { CourseController } from './course.controller';
+import { USER_ROLE } from '../user/user.constant';
+import auth from '../../app/middleware/auth';
 
 const CourseRouter = express.Router();
 
@@ -9,6 +11,17 @@ CourseRouter.post(
   '/create-course',
   validateRequest(CourseValidation.createCourseValidationSchema),
   CourseController.createCourse,
+);
+
+CourseRouter.get(
+  '/:courseId/get-faculties',
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  ),
+  CourseController.getFacultiesWithCourse,
 );
 
 CourseRouter.get('/', CourseController.getAllCourses);
