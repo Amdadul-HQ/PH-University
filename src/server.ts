@@ -30,7 +30,6 @@ process.on('unhandledRejection', (error) => {
     });
   }
 });
-
 process.on('uncaughtException', () => {
   console.log('uncaughtException is deleted, shutting down....');
   process.exit(1);
