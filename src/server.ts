@@ -20,7 +20,7 @@ async function main() {
   }
 }
 
-main();
+main()
 process.on('unhandledRejection', (error) => {
   console.log(error, 'error');
   console.log('unhandleRejection is deleted, shutting down....');
