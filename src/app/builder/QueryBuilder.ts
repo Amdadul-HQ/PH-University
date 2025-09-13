@@ -9,7 +9,7 @@ class QueryBuilder<T> {
     this.query = query;
   }
 
-  // searching
+  // searching.
   search(searchAbleFields: string[]) {
     const searchTerm = this.query.searchTerm;
 
@@ -39,7 +39,7 @@ class QueryBuilder<T> {
     return this;
   }
 
-  // Sorting
+  // Sorting.
   sort() {
     const sort =
       (this?.query?.sort as string)?.split(',').join(' ') || '-createdAt';
@@ -49,7 +49,7 @@ class QueryBuilder<T> {
     return this;
   }
 
-  //   pagination
+  // pagination
 
   paginate() {
     const page = Number(this.query.page) || 1;
